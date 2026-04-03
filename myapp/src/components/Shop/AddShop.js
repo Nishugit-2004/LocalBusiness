@@ -4,16 +4,12 @@ import { API_BASE_URL } from "../../api";
 import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
 
+import AdminSidebar from "../Admin/AdminSidebar";
+
 const AddShop = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-
-  const handleLogout = () => {
-    sessionStorage.removeItem("adminData");
-    toast.success("Logged out successfully!");
-    window.location.href = "/";
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,92 +53,54 @@ const AddShop = () => {
   };
 
   return (
-    <>
-      <div className="w-64 bg-teal-600 text-white fixed top-0 left-0 bottom-0 p-6">
-        <h2 className="text-2xl font-bold mb-6">Profile Menu</h2>
-        <ul>
-          <li>
-            <Link to="/admin/welcome" className="block py-2 px-4 hover:bg-teal-500 rounded-md">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to="/admin/profile" className="block py-2 px-4 hover:bg-teal-500 rounded-md">
-              User Profile
-            </Link>
-          </li>
-          <li>
-            <Link to="/admin/add-shop" className="block py-2 px-4 hover:bg-teal-500 rounded-md">
-              Add Shop
-            </Link>
-          </li>
-          <li>
-            <Link to="/admin/alluser" className="block py-2 px-4 hover:bg-teal-500 rounded-md">
-              Customer
-            </Link>
-          </li>
-          <li>
-            <Link to="/admin/alladmin" className="block py-2 px-4 hover:bg-teal-500 rounded-md">
-              Seller
-            </Link>
-          </li>
-          <li>
-            <Link to="/admin/allorder" className="block py-2 px-4 hover:bg-teal-500 rounded-md">
-              All Orders
-            </Link>
-          </li>
-          <li>
-            <Link to="/admin/contact" className="block py-2 px-4 hover:bg-teal-500 rounded-md">
-              Feedback
-            </Link>
-          </li>
-          <li>
-            <Link to="/" className="block py-2 px-4 hover:bg-teal-500 rounded-md">
-              Go Back
-            </Link>
-          </li>
-          <li>
-            <button
-              onClick={handleLogout}
-              className="block w-full py-2 px-4 mt-6 bg-red-500 text-white rounded-md hover:bg-red-600"
-            >
-              Logout
-            </button>
-          </li>
-        </ul>
-      </div>
+    <div className="flex min-h-screen bg-gray-50 mt-16">
+      <AdminSidebar />
+      <div className="flex-1 ml-0 md:ml-64 p-4 md:p-10 flex flex-col items-center justify-start">
+        <div className="max-w-md w-full bg-white shadow-2xl rounded-3xl p-8 md:p-10 border border-gray-100 mt-5 transform transition hover:scale-[1.01]">
+          <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-teal-400 mb-8 text-center tracking-tight">Add New Shop</h1>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+               <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Shop Name</label>
+               <input
+                 type="text"
+                 placeholder="Enter shop name..."
+                 value={name}
+                 onChange={(e) => setName(e.target.value)}
+                 className="w-full px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-teal-500 outline-none transition bg-gray-50 font-medium"
+                 required
+               />
+            </div>
 
-      <div className="p-8 max-w-md mx-auto bg-white shadow-lg rounded-lg mt-20">
-        <h1 className="text-2xl font-bold text-brand mb-4 text-center">Add New Shop</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Shop Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          />
-          <textarea
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-          <input
-            type="text"
-            placeholder="Image URL"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-          <button type="submit" className="w-full bg-brand text-white p-2 rounded hover:bg-brand">
-            Submit
-          </button>
-        </form>
+            <div className="space-y-2">
+               <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Description</label>
+               <textarea
+                 placeholder="Tell us about the shop..."
+                 value={description}
+                 onChange={(e) => setDescription(e.target.value)}
+                 className="w-full px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-teal-500 outline-none transition bg-gray-50 font-medium min-h-[120px]"
+               />
+            </div>
+
+            <div className="space-y-2">
+               <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Shop Image URL</label>
+               <input
+                 type="text"
+                 placeholder="https://..."
+                 value={imageUrl}
+                 onChange={(e) => setImageUrl(e.target.value)}
+                 className="w-full px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-teal-500 outline-none transition bg-gray-50 font-medium"
+               />
+            </div>
+
+            <button type="submit" className="w-full bg-teal-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-teal-700 transform transition active:scale-95 mt-4">
+              LAUNCH SHOP
+            </button>
+          </form>
+        </div>
         <Toaster />
       </div>
-    </>
+    </div>
   );
 };
 

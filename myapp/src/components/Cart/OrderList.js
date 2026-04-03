@@ -7,6 +7,9 @@ import { useDispatch } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
 import Loader from '../Loader';
 
+import { API_BASE_URL } from '../../api';
+import UserSidebar from '../User/UserSidebar';
+
 function OrderList() {
   const [order, setorder] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,10 +21,9 @@ function OrderList() {
   useEffect(() => {
     const fetchOrders = async () => {
       const userdata = JSON.parse(sessionStorage.getItem('userData'));
-      const token = userdata?.token;
       const userId = userdata?.user?.id;
 
-      if (!token) {
+      if (!userId) {
         toast.error('No authorized user found');
         navigate('/user/login');
         return;
@@ -29,7 +31,7 @@ function OrderList() {
 
       setLoading(true);
       try {
-        const response = await axios.get(`https://mernbackend-1-9ihi.onrender.com/order/orderdetails?userId=${userId}`);
+        const response = await axios.get(`${API_BASE_URL}/order/orderdetails?userId=${userId}`);
         setorder(response.data);
       } catch (error) {
         console.error('There was an error fetching the data!', error);
@@ -45,17 +47,9 @@ function OrderList() {
     dispatch(initializeAuth());
   }, [dispatch]);
 
-  const handleLogout = () => {
-    sessionStorage.clear();
-    dispatch(logout());
-    toast.success('Logged Out Successfully!');
-    navigate('/');
-    window.location.reload();
-  };
-
   const handleRemoveOrder = async (orderId) => {
     try {
-      await axios.delete(`https://mernbackend-1-9ihi.onrender.com/order/delete?id=${orderId}`);
+      await axios.delete(`${API_BASE_URL}/order/delete?id=${orderId}`);
       setorder(order.filter((order) => order._id !== orderId));
       window.location.reload();
     } catch (error) {
@@ -79,92 +73,62 @@ function OrderList() {
   }
 
   return (
-    <>
-      <div className="flex min-h-screen">
-        {/* Sidebar */}
-        <div className="w-64 bg-teal-600 text-white fixed top-0 left-0 bottom-0 p-6">
-          <h2 className="text-2xl font-bold mb-6">Profile Menu</h2>
-          <ul>
-            <li>
-              <Link to="/user/welcome" className="block py-2 px-4 hover:bg-teal-500 rounded-md">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link to="/user/profile" className="block py-2 px-4 hover:bg-teal-500 rounded-md">
-                User Profile
-              </Link>
-            </li>
-            <li>
-              <Link to="/order/orderdetails" className="block py-2 px-4 hover:bg-teal-500 rounded-md">
-                All Orders
-              </Link>
-            </li>
-            <li>
-              <Link to="/" className="block py-2 px-4 hover:bg-teal-500 rounded-md">
-                Go Back
-              </Link>
-            </li>
-            <li>
-              <button
-                onClick={handleLogout}
-                className="block w-full py-2 px-4 mt-6 bg-red-500 text-white rounded-md hover:bg-red-600"
-              >
-                Logout
-              </button>
-            </li>
-          </ul>
-        </div>
+    <div className="flex min-h-screen bg-gray-50 mt-16">
+      <UserSidebar />
+      
+      {/* Main Content */}
+      <div className="flex-1 ml-0 md:ml-64 p-4 md:p-10 text-center">
+        <h1 className="text-3xl font-black text-orange-500 mb-8 mt-5 tracking-tight uppercase">My Orders</h1>
 
-        {/* Main Content */}
-        <div className="ml-64 p-6 w-full">
-          <h1 className="text-orange-500 font-bold text-2xl mb-4">Order Details</h1>
+        <div className="max-w-5xl mx-auto space-y-8">
+          <div className="bg-white shadow-xl rounded-3xl p-6 border border-gray-100">
+             <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 text-left">
+               <div>
+                  <span className="text-gray-400 font-bold uppercase tracking-widest text-[10px] block mb-1">Filter by date</span>
+                  <input
+                    type="date"
+                    value={searchDate}
+                    onChange={handleSearchDateChange}
+                    className="px-6 py-3 rounded-2xl border-2 border-orange-100 focus:border-orange-500 outline-none transition font-bold text-gray-700 bg-gray-50"
+                  />
+               </div>
+               <div className="text-right">
+                  <span className="text-gray-400 font-bold uppercase tracking-widest text-[10px] block mb-1">Total Orders</span>
+                  <span className="text-2xl font-black text-teal-600">{order.length}</span>
+               </div>
+             </div>
 
-          <div className="mb-6">
-            <input
-              type="date"
-              value={searchDate}
-              onChange={handleSearchDateChange}
-              className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="Search by Date"
-            />
+             <div className="overflow-x-auto rounded-2xl shadow-inner bg-gray-50 border border-gray-100">
+                <table className="min-w-full text-left">
+                  <thead className="bg-orange-500 text-white font-bold uppercase text-[10px] tracking-[0.2em]">
+                    <tr>
+                      <th className="px-6 py-4 text-center">ID</th>
+                      <th className="px-6 py-4">Ordered by</th>
+                      <th className="px-6 py-4">Seller ID</th>
+                      <th className="px-6 py-4">Total</th>
+                      <th className="px-6 py-4">Net</th>
+                      <th className="px-6 py-4">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {filteredOrders.map((order) => (
+                      <tr key={order._id} className="hover:bg-white transition cursor-default">
+                        <td className="px-6 py-4 font-mono text-[10px] text-gray-400 text-center">#{order._id.slice(-6)}</td>
+                        <td className="px-6 py-4 font-bold text-gray-700">{order.userName}</td>
+                        <td className="px-6 py-4 font-mono text-[10px] text-gray-400">{order.adminId}</td>
+                        <td className="px-6 py-4 font-black text-teal-600">₹{order.totalPrice}</td>
+                        <td className="px-6 py-4 font-black text-orange-500">₹{order.discountedPrice}</td>
+                        <td className="px-6 py-4 text-xs text-gray-400">
+                          {new Date(order.orderDate).toLocaleDateString()}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+             </div>
           </div>
 
-          <div className="overflow-x-auto mb-10">
-            <table className="min-w-full bg-white border border-gray-300 rounded-md shadow">
-              <thead className="bg-teal-500 text-white">
-                <tr>
-                  <th className="px-4 py-2">Order ID</th>
-                  <th className="px-4 py-2">Ordered by</th>
-                  <th className="px-4 py-2">Seller</th>
-                  <th className="px-4 py-2">Total Price</th>
-                  <th className="px-4 py-2">Discounted Price</th>
-                  <th className="px-4 py-2">Order Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredOrders.map((order) => (
-                  <tr key={order._id} className="text-center border-t">
-                    <td className="px-4 py-2">{order._id}</td>
-                    <td className="px-4 py-2">{order.userName}</td>
-                    <td className="px-4 py-2">{order.adminId}</td>
-                    <td className="px-4 py-2">{order.totalPrice}</td>
-                    <td className="px-4 py-2">{order.discountedPrice}</td>
-                    <td className="px-4 py-2">
-                      {new Date(order.orderDate).toLocaleDateString()} <br />
-                      {new Date(order.orderDate).toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit',
-                      })}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
             {order.map((order) => (
               <OrderCard key={order._id} order={order} onRemove={handleRemoveOrder} />
             ))}
@@ -172,7 +136,7 @@ function OrderList() {
         </div>
       </div>
       <Toaster />
-    </>
+    </div>
   );
 }
 

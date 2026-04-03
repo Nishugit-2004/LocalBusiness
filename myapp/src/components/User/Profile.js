@@ -7,6 +7,8 @@ import { Toaster, toast } from 'react-hot-toast';
 import { API_BASE_URL } from '../../api';
 import '../Cart/Order.css';
 
+import UserSidebar from './UserSidebar';
+
 const Profile = () => {
   const [userData, setUserData] = useState(() => {
     const storedUserData = sessionStorage.getItem('userData');
@@ -24,14 +26,6 @@ const Profile = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    sessionStorage.clear();
-    dispatch(logout());
-    toast.success('Logged Out Successfully!');
-    navigate('/');
-    window.location.reload();
-  };
 
   useEffect(() => {
     dispatch(initializeAuth());
@@ -79,38 +73,8 @@ const Profile = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50 mt-16">
-      {/* Sidebar - Hidden on Mobile, Fixed on Desktop */}
-      <div className="hidden md:block w-64 bg-teal-600 text-white fixed top-0 bottom-0 left-0 p-8 shadow-xl mt-16">
-        <h2 className="text-xl font-extrabold mb-10 tracking-tight border-b border-teal-500 pb-4">
-          <i className="fa-solid fa-circle-user mr-2"></i> Account settings
-        </h2>
-        <ul className="space-y-4">
-          <li>
-            <Link to="/" className="flex items-center py-3 px-4 hover:bg-teal-700 rounded-xl transition duration-200">
-              <i className="fa-solid fa-house mr-3 text-sm"></i> Home
-            </Link>
-          </li>
-          <li>
-            <Link to="/user/profile" className="flex items-center py-3 px-4 bg-teal-700 rounded-xl transition duration-200 shadow-inner">
-              <i className="fa-solid fa-user mr-3 text-sm"></i> My Profile
-            </Link>
-          </li>
-          <li>
-            <Link to="/order/orderdetails" className="flex items-center py-3 px-4 hover:bg-teal-700 rounded-xl transition duration-200">
-              <i className="fa-solid fa-box mr-3 text-sm"></i> My Orders
-            </Link>
-          </li>
-          <li className="pt-10">
-            <button
-              onClick={handleLogout}
-              className="flex items-center w-full py-4 px-4 bg-red-500 text-white rounded-2xl hover:bg-red-600 shadow-lg transform transition active:scale-95"
-            >
-              <i className="fa-solid fa-right-from-bracket mr-3"></i> Logout
-            </button>
-          </li>
-        </ul>
-      </div>
-
+      <UserSidebar />
+      
       {/* Main Content - No margin on mobile, margin on desktop */}
       <div className="flex-1 ml-0 md:ml-64 p-4 md:p-10">
         <div className="max-w-4xl mx-auto">

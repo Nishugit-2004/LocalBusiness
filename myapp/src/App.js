@@ -27,13 +27,16 @@ import Location from './components/Layout/Location';
 import AddShop from './components/Shop/AddShop';
 import AdminShops from './components/Admin/AdminShops';
 import ShopMenu from './components/Menus/ShopMenu';
+import ManageMenu from './components/Admin/ManageMenu';
 
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   
   return (
      <div className="App">
       <Provider store={store}>
+      <Toaster position="top-center" />
       <Navbar/>
       <Location/>
       <Routes>
@@ -61,6 +64,7 @@ function App() {
           <Route path='/admin/alladmin' element={<AdminAlladmin/>}/>
           <Route path='/admin/allorder' element={<AdminAllorder/>}/>
           <Route path='/admin/contact' element={<AllFeedback/>}/>
+          <Route path='/admin/manage-menu/:shopId' element={<ManageMenu/>}/>
           <Route path='/user/forgotpassword' element={<ForgotPassword/>}/>
           <Route path='/user/resetpassword/:token' element={<ResetPassword/>}/>
       </Routes>

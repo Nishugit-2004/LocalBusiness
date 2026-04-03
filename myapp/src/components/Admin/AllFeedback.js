@@ -2,30 +2,31 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../../api";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { adminlogout, initializeAdmin } from "../../store/adminSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { initializeAdmin } from "../../store/adminSlice";
 
-import toast, { Toaster } from "react-hot-toast";
 import Loader from "../Loader";
+import AdminSidebar from "./AdminSidebar";
 
 const AllFeedback = () => {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.admin.isAuthenticated);
 
-  const handleLogout = () => {
-    dispatch(adminlogout());
-    toast.success("Logged Out Successfully!");
-
-    navigate("/");
-    window.location.reload();
-  };
   useEffect(() => {
     dispatch(initializeAdmin());
   }, [dispatch]);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/admin/login");
+    }
+  }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
     const fetchUsers = async () => {
       setLoading(true);
       try {
@@ -46,113 +47,37 @@ const AllFeedback = () => {
   }
 
   return (
-    <>
-      <div className="main-order">
-        {/* Sidebar */}
-        <div className="w-64 bg-teal-600 text-white fixed top-0 left-0 bottom-0 p-6">
-          <h2 className="text-2xl font-bold mb-6">Profile Menu</h2>
-          <ul>
-            <li>
-              <Link
-                to="/admin/welcome"
-                className="block py-2 px-4 hover:bg-teal-500 rounded-md"
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin/profile"
-                className="block py-2 px-4 hover:bg-teal-500 rounded-md"
-              >
-                User Profile
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin/add-shop"
-                className="block py-2 px-4 hover:bg-teal-500 rounded-md"
-              >
-                Add Shop
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin/alluser"
-                className="block py-2 px-4 hover:bg-teal-500 rounded-md"
-              >
-                Customer
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin/alladmin"
-                className="block py-2 px-4 hover:bg-teal-500 rounded-md"
-              >
-                Seller
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin/allorder"
-                className="block py-2 px-4 hover:bg-teal-500 rounded-md"
-              >
-                All Orders
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin/contact"
-                className="block py-2 px-4 hover:bg-teal-500 rounded-md"
-              >
-                Feedback
-              </Link>
-            </li>
-
-            <li>
-              <Link
-                to="/"
-                className="block py-2 px-4 hover:bg-teal-500 rounded-md"
-              >
-                Go Back
-              </Link>
-            </li>
-            <li>
-              <button
-                onClick={handleLogout}
-                className="block w-full py-2 px-4 mt-6 bg-red-500 text-white rounded-md hover:bg-red-600"
-              >
-                Logout
-              </button>
-            </li>
-          </ul>
-        </div>
-
-        <div className="order2">
-          <h1 class=" text-orange-500 font-bold text-xl">All Feedback</h1>
-
-          <table className="users-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Message</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((feedback) => (
-                <tr key={feedback._id}>
-                  <td>{feedback.name}</td>
-                  <td>{feedback.email}</td>
-                  <td>{feedback.message}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <div className="flex min-h-screen bg-gray-50 mt-16">
+      <AdminSidebar />
+      <div className="flex-1 ml-0 md:ml-64 p-4 md:p-10">
+        <h1 className="text-3xl font-black text-orange-500 mb-8 mt-5 tracking-tight uppercase text-center">All Feedback</h1>
+        
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white shadow-xl rounded-3xl overflow-hidden border border-gray-100">
+             <div className="overflow-x-auto rounded-2xl shadow-inner bg-gray-50 border border-gray-100">
+                <table className="min-w-full text-left">
+                  <thead className="bg-teal-600 text-white font-bold uppercase text-[10px] tracking-[0.2em]">
+                    <tr>
+                      <th className="px-6 py-4">Name</th>
+                      <th className="px-6 py-4">Email</th>
+                      <th className="px-6 py-4">Message</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {users.map((feedback) => (
+                      <tr key={feedback._id} className="hover:bg-white transition">
+                        <td className="px-6 py-4 font-bold text-gray-700">{feedback.name}</td>
+                        <td className="px-6 py-4 font-medium text-gray-500">{feedback.email}</td>
+                        <td className="px-6 py-4 text-sm text-gray-400 italic">"{feedback.message}"</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+             </div>
+          </div>
         </div>
       </div>
-      <Toaster />
-    </>
+    </div>
   );
 };
 

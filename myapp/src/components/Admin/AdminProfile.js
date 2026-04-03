@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { initializeAdmin, adminlogout } from "../../store/adminSlice";
 import "../Cart/Order.css";
 import axios from "axios";
 import { API_BASE_URL } from "../../api";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import Loader from "../Loader";
 
+import AdminSidebar from "./AdminSidebar";
+
 const AdminProfile = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.admin.isAuthenticated);
+
   const [adminData, setadminData] = useState(() => {
     const storedadminData = sessionStorage.getItem("adminData");
     return storedadminData ? JSON.parse(storedadminData) : null;
@@ -19,22 +24,19 @@ const AdminProfile = () => {
   const [name, setName] = useState(adminData ? adminData.admin.name : "");
   const [email, setEmail] = useState(adminData ? adminData.admin.email : "");
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    sessionStorage.clear();
-    dispatch(adminlogout());
-    alert("Logged Out Successfully!");
-
-    navigate("/");
-    window.location.reload();
-  };
   useEffect(() => {
     dispatch(initializeAdmin());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/admin/login");
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (!isAuthenticated) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,7 +50,7 @@ const AdminProfile = () => {
         },
         {
           headers: {
-            Authorization: `Bearer${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -82,43 +84,7 @@ const AdminProfile = () => {
   }
   return (
     <div className="flex min-h-screen bg-gray-50 mt-16">
-      {/* Sidebar - Hidden on Mobile, Fixed on Desktop */}
-      <div className="hidden md:block w-64 bg-teal-600 text-white fixed top-0 bottom-0 left-0 p-8 shadow-xl mt-16 overflow-y-auto">
-        <h2 className="text-xl font-extrabold mb-10 tracking-tight border-b border-teal-500 pb-4">
-          <i className="fa-solid fa-gauge-high mr-2"></i> Admin Panel
-        </h2>
-        <ul className="space-y-3">
-          {[
-            { to: "/admin/welcome", icon: "fa-house", label: "Dashboard" },
-            { to: "/admin/profile", icon: "fa-user-tie", label: "My Profile" },
-            { to: "/admin/add-shop", icon: "fa-plus", label: "Add Shop" },
-            { to: "/admin/alluser", icon: "fa-users", label: "Customers" },
-            { to: "/admin/alladmin", icon: "fa-user-shield", label: "Sellers" },
-            { to: "/admin/allorder", icon: "fa-boxes-stacked", label: "All Orders" },
-            { to: "/admin/contact", icon: "fa-comment-dots", label: "Feedback" },
-            { to: "/", icon: "fa-arrow-left", label: "Go Back" }
-          ].map((item) => (
-            <li key={item.to}>
-              <Link 
-                to={item.to} 
-                className={`flex items-center py-3 px-4 rounded-xl transition duration-200 ${
-                  window.location.pathname === item.to ? "bg-teal-700 shadow-inner" : "hover:bg-teal-700"
-                }`}
-              >
-                <i className={`fa-solid ${item.icon} mr-3 text-sm opacity-80`}></i> {item.label}
-              </Link>
-            </li>
-          ))}
-          <li className="pt-8">
-            <button
-              onClick={handleLogout}
-              className="flex items-center w-full py-4 px-4 bg-red-500 text-white rounded-2xl hover:bg-red-600 shadow-lg transform transition active:scale-95"
-            >
-              <i className="fa-solid fa-right-from-bracket mr-3"></i> Logout
-            </button>
-          </li>
-        </ul>
-      </div>
+      <AdminSidebar />
 
       {/* Main Content */}
       <div className="flex-1 ml-0 md:ml-64 p-4 md:p-10">
@@ -172,32 +138,60 @@ const AdminProfile = () => {
       </div>
 
       {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={() => setShowModal(false)}>
-              &times;
-            </span>
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="username">Username:</label>
-              <input
-                type="text"
-                id="username"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <label htmlFor="email">Email:</label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <button type="submit">Update</button>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-lg rounded-3xl p-8 shadow-2xl relative transform transition-all scale-100">
+            <button 
+              onClick={() => setShowModal(false)}
+              className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition"
+            >
+              <i className="fa-solid fa-xmark text-2xl"></i>
+            </button>
+            
+            <h2 className="text-2xl font-black text-gray-800 mb-2 truncate">Update Profile</h2>
+            <p className="text-gray-400 text-sm mb-8">Revitalize your administrative identity.</p>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-2">Display Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-6 py-4 rounded-2xl border-2 border-gray-50 bg-gray-50 focus:border-teal-500 outline-none transition font-bold text-gray-700"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-2">Email Address</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-6 py-4 rounded-2xl border-2 border-gray-50 bg-gray-50 focus:border-teal-500 outline-none transition font-bold text-gray-700"
+                  required
+                />
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <button 
+                  type="submit" 
+                  className="flex-1 bg-teal-600 text-white py-5 rounded-2xl font-black shadow-xl hover:bg-teal-700 transform transition active:scale-95"
+                >
+                  SAVE CHANGES
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="flex-1 bg-gray-100 text-gray-500 py-5 rounded-2xl font-black hover:bg-gray-200 transition"
+                >
+                  CANCEL
+                </button>
+              </div>
             </form>
           </div>
         </div>
       )}
-      <Toaster />
     </div>
   );
 };
