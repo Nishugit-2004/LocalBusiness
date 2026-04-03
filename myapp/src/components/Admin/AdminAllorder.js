@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import OrderCard from "../Cart/OrderCard";
 import { initializeAdmin, adminlogout } from "../../store/adminSlice";
+import { Toaster } from "react-hot-toast";
 import "./Admin.css";
 import "../Cart/Order.css";
 import Loader from "../Loader";
