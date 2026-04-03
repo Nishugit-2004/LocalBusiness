@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../api';
 import 'react-toastify/dist/ReactToastify.css';
 import './Signup.css'; 
 import {useDispatch, useSelector} from 'react-redux'
