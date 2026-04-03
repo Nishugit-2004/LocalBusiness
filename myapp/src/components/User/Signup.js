@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Signup.css'; // Import the CSS file for styling
@@ -69,7 +70,7 @@ const Signup = () => {
             return;
         }
         try {
-            const res = await axios.post('http://localhost:4000/user/signup', formData);
+            const res = await axios.post(`${API_BASE_URL}/user/signup`, formData);
             toast.success('Signup successful!');
             setFormData(initialData)
             console.log(res.data);

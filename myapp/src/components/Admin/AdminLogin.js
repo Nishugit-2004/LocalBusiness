@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../api';
 import 'react-toastify/dist/ReactToastify.css';
 import '../User/Signup.css'; 
 import {useDispatch, useSelector} from 'react-redux'
@@ -38,7 +39,7 @@ const AdminLogin = () => {
         e.preventDefault();
         setLoading(true)
         try {
-            const res = await axios.post('http://localhost:4000/admin/login', formData);
+            const res = await axios.post(`${API_BASE_URL}/admin/login`, formData);
             const adminData={
                 admin: res.data.admin,
                 token: res.data.token,

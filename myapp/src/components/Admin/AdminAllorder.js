@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../api";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import OrderCard from "../Cart/OrderCard";
@@ -26,7 +27,7 @@ function OrderList() {
       setLoading(true);
       try {
         const response = await axios.get(
-          `http://localhost:4000/admin/allorder`
+          `${API_BASE_URL}/admin/allorder`
         );
 
         setorder(response.data);

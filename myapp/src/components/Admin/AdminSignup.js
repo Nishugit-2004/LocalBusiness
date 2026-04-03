@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Admin.css'; 
@@ -61,7 +62,7 @@ const AdminSignup = () => {
         }
         setLoading(true)
         try {
-            const res = await axios.post('http://localhost:4000/admin/signup', formData);
+            const res = await axios.post(`${API_BASE_URL}/admin/signup`, formData);
             toast.success('Signup successful!');
             setFormData(initialData)
             console.log(res.data);

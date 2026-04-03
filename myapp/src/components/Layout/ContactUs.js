@@ -4,6 +4,7 @@ import Lottie from 'lottie-react';
 import Footer from './Footer';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
+import { API_BASE_URL } from '../../api';
 import Loader from '../Loader';
 
 const ContactUs = () => {
@@ -24,7 +25,7 @@ const ContactUs = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post('http://localhost:4000/user/contact', formData);
+      await axios.post(`${API_BASE_URL}/user/contact`, formData);
       setFormData(initial);
       toast.success('Message sent successfully!');
     } catch (error) {

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { initializeAdmin, adminlogout } from "../../store/adminSlice";
 import "../Cart/Order.css";
 import axios from "axios";
+import { API_BASE_URL } from "../../api";
 import { Toaster, toast } from "react-hot-toast";
 import Loader from "../Loader";
 
@@ -40,7 +41,7 @@ const AdminProfile = () => {
     setLoading(true);
     try {
       const response = await axios.put(
-        `http://localhost:4000/admin/update?adminId=${adminId}`,
+        `${API_BASE_URL}/admin/update?adminId=${adminId}`,
         {
           name: name,
           email: email,

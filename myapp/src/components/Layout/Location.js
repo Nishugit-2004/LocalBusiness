@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../../api';
 import './Home.css';
 
 const Location = () => {
@@ -67,7 +68,7 @@ const Location = () => {
   // Send location to backend
   const postLocationToServer = async (lat, lng, address) => {
     const userId = localStorage.getItem('userId'); // optional
-    const response = await fetch('http://localhost:4000/api/location', {
+    const response = await fetch(`${API_BASE_URL}/api/location`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ latitude: lat, longitude: lng, address, userId }),

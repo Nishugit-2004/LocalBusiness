@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../api';
 
 const AdminShops = () => {
   const [shops, setShops] = useState([]);
@@ -19,7 +20,7 @@ const AdminShops = () => {
         return;
       }
       try {
-        const response = await axios.get('http://localhost:4000/shop/shops', {
+        const response = await axios.get(`${API_BASE_URL}/shop/shops`, {
           params: { adminId }, 
         });
         setShops(response.data);

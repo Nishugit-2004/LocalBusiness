@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../api";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { adminlogout, initializeAdmin } from "../../store/adminSlice";
@@ -28,7 +29,7 @@ const AllFeedback = () => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:4000/user/contact");
+        const response = await axios.get(`${API_BASE_URL}/user/contact`);
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);

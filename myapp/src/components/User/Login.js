@@ -41,7 +41,7 @@ const Login = () => {
         e.preventDefault();
         setLoading(true)
         try {
-            const res = await axios.post('http://localhost:4000/user/login', formData);
+            const res = await axios.post(`${API_BASE_URL}/user/login`, formData);
             const userData={
                 user: res.data.user,
                 token: res.data.token,

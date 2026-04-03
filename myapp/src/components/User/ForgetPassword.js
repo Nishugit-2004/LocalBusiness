@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../api';
 import './ForgetPassword.css'; 
 import toast, { Toaster } from 'react-hot-toast';
 import Loader from '../Loader';
@@ -12,7 +13,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     setLoading(true)
     try {
-      const response = await axios.post('http://localhost:4000/user/forgotpassword', { email });
+      const response = await axios.post(`${API_BASE_URL}/user/forgotpassword`, { email });
       if (response.status === 200) {
         toast.success('Password reset email sent!');
       } else {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ShopList.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../../api';
 
 // Haversine Formula for distance in km
 const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
@@ -25,7 +26,7 @@ const ShopItem = ({ shop, userLocation }) => {
   useEffect(() => {
     const fetchAdmin = async () => {
       try {
-        const res = await axios.get(`http://localhost:4000/admin/${shop.adminId}`);
+        const res = await axios.get(`${API_BASE_URL}/admin/${shop.adminId}`);
         setAdmin(res.data);
       } catch (err) {
         console.error('Failed to fetch admin details:', err);

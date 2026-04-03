@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../api';
 import ShopItem from './ShopItem';
 import './ShopList.css';
 import Loader from '../Loader';
@@ -14,7 +15,7 @@ function ShopList() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:4000/shop');
+        const response = await axios.get(`${API_BASE_URL}/shop`);
         setShops(response.data);
       } catch (error) {
         console.error('Error fetching shops:', error);

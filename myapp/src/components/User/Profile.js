@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { initializeAuth, logout } from '../../store/userSlice';
 import axios from 'axios';
 import { Toaster, toast } from 'react-hot-toast';
+import { API_BASE_URL } from '../../api';
 import '../Cart/Order.css';
 
 const Profile = () => {
@@ -41,7 +42,7 @@ const Profile = () => {
     setLoading(true);
     try {
       const response = await axios.put(
-        `http://localhost:4000/user/update?userId=${userId}`,
+        `${API_BASE_URL}/user/update?userId=${userId}`,
         {
           name: name,
           email: email,

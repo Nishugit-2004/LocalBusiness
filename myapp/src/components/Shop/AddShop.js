@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../api";
 import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
 
@@ -35,7 +36,7 @@ const AddShop = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/shop",
+        `${API_BASE_URL}/shop`,
         newShop,
         {
           headers: {
