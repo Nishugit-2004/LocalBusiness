@@ -10,6 +10,7 @@ import Contact from '../model/ContactSchema.js';
 const router=express.Router();
 
 router.post('/signup', async (req, res) => {
+    console.log('>>> INCOMING SIGNUP REQUEST:', req.body.email);
     const { name, email, password, phone } = req.body;
 
     try {
@@ -38,6 +39,7 @@ router.post('/signup', async (req, res) => {
     }
 });
 router.post('/login', async (req, res) => {
+    console.log('>>> INCOMING LOGIN REQUEST:', req.body.email);
     const { email, password } = req.body;
 
     try {
