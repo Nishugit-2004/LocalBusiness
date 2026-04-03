@@ -80,22 +80,28 @@ const Location = () => {
   };
 
   return (
-    <div>
-      <h3>Your Location</h3>
+    <div className="bg-teal-600 text-white p-3 text-center shadow-md animate-fade-in">
       {loading ? (
-        <p>Fetching location...</p>
+        <p className="text-sm italic opacity-80">Locating your neighborhood...</p>
       ) : error ? (
-        <p style={{ color: 'red' }}>Error: {error}</p>
+        <p className="text-red-100 text-xs font-bold">Please enable location for a better experience</p>
       ) : (
-        <div className="review-cards" style={{ backgroundColor: '#12a9a1', color: 'white', padding: '30px' }}>
-          <h1>Your Current Location</h1><br />
-          <p><strong>Latitude:</strong> {location.latitude}</p><br />
-          <p><strong>Longitude:</strong> {location.longitude}</p><br />
-          <p><strong>Address:</strong> {address}</p>
+        <div className="flex flex-col items-center gap-1">
+          <div className="flex items-center gap-2 mb-1">
+            <i className="fa-solid fa-location-dot text-sm text-teal-200"></i>
+            <h2 className="text-xs font-bold tracking-widest uppercase">Current Shop Zone</h2>
+          </div>
+          <p className="text-[10px] opacity-75 font-mono">
+            {location.latitude.toFixed(4)}°N, {location.longitude.toFixed(4)}°E
+          </p>
+          <p className="text-xs font-medium max-w-xs truncate px-4">
+            {address || "Locating..."}
+          </p>
         </div>
       )}
     </div>
   );
 };
+
 
 export default Location;
