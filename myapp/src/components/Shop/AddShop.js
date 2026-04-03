@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../../api";
-import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { initializeAdmin } from "../../store/adminSlice";
+import toast from "react-hot-toast";
 
 import AdminSidebar from "../Admin/AdminSidebar";
 
@@ -11,17 +13,28 @@ const AddShop = () => {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.admin.isAuthenticated);
+
+  useEffect(() => {
+    dispatch(initializeAdmin());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/admin/login");
+    }
+  }, [isAuthenticated, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isAuthenticated) return;
 
     const adminData = JSON.parse(sessionStorage.getItem("adminData"));
     const adminId = adminData?.admin?.id;
     const token = adminData?.token;
-
-    if (!adminId) {
-      toast.error("Only admins can post a shop.");
-      return;
-    }
 
     const newShop = {
       name,
@@ -98,7 +111,6 @@ const AddShop = () => {
             </button>
           </form>
         </div>
-        <Toaster />
       </div>
     </div>
   );
