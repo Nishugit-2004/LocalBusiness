@@ -3,7 +3,7 @@ import './MenuCard.css';
 import {add}  from '../../store/cartSlice'; 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 const MenuCard = ({ menu }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();

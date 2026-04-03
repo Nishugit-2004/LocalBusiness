@@ -4,16 +4,16 @@ import { clearCart, remove } from '../../store/cartSlice';
 import './Cart.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../api';
 import Loader from '../Loader';
 import { toast, Toaster } from 'react-hot-toast';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe("pk_test_51NmBxVSJm0EOvE96jDAKUOsep6pg3OfXGtTguyJdXCt0FFxOL8Ipho1HzbWtDVTUin5wJyEFX8jYwcmCrcHTx0gh00spEecMx7");
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 export const Cart = () => {
   const items = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const userData = JSON.parse(sessionStorage.getItem('userData'));
   const userId = userData?.user?.id || null;
@@ -33,7 +33,7 @@ export const Cart = () => {
   const discountedPrice = totalPrice * (1 - discount);
 
   useEffect(() => {
-    axios.get('https://mernbackend-2-ebc9.onrender.com/restaurant')
+    axios.get(`${API_BASE_URL}/restaurant`)
       .then(res => {
         const names = res.data.reduce((acc, r) => ({ ...acc, [r._id]: r.name }), {});
         setRestaurantNames(names);
@@ -61,8 +61,8 @@ export const Cart = () => {
 
     setLoading(true);
     try {
-      await axios.post('https://mernbackend-1-9ihi.onrender.com/order/orderdetails', orderData);
-      const res = await axios.post('https://mernbackend-1-9ihi.onrender.com/order/create-checkout-session', orderData);
+      await axios.post(`${API_BASE_URL}/order/orderdetails`, orderData);
+      const res = await axios.post(`${API_BASE_URL}/order/create-checkout-session`, orderData);
       const stripe = await stripePromise;
 
       dispatch(clearCart());

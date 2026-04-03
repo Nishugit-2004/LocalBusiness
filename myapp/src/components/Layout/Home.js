@@ -1,6 +1,4 @@
 import React from "react";
-import RestaurantList from "../Shop/ShopList";
-import Footer from "../Layout/Footer";
 import "./Home.css";
 import { Link } from "react-router-dom";
 import ContactUs from "./ContactUs";
@@ -60,7 +58,7 @@ const Home = () => {
                 <div class="flex justify-between">
                   <img
                     src="https://randomuser.me/api/portraits/men/1.jpg"
-                    alt="User Image"
+                    alt="User"
                   />
                   <h3>John Doe</h3>
                 </div>
@@ -79,7 +77,7 @@ const Home = () => {
                 <div class="flex justify-between">
                   <img
                     src="https://randomuser.me/api/portraits/women/2.jpg"
-                    alt="User Image"
+                    alt="User"
                   />
                   <h3>Jane Smith</h3>
                 </div>
@@ -98,7 +96,7 @@ const Home = () => {
                 <div class="flex">
                   <img
                     src="https://randomuser.me/api/portraits/men/3.jpg"
-                    alt="User Image"
+                    alt="User"
                   />
                   <h3>Mike Johnson</h3>
                 </div>

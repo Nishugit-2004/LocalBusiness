@@ -4,7 +4,7 @@ import { API_BASE_URL } from "../../api";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { adminlogout, initializeAdmin } from "../../store/adminSlice";
-import Card from "./Card";
+
 import toast, { Toaster } from "react-hot-toast";
 import Loader from "../Loader";
 

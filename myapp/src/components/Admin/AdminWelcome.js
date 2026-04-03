@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { initializeAdmin, adminlogout } from "../../store/adminSlice";
 import Animation from "../Animations/welcome.json";
 import Lottie from "lottie-react";
-import { Toaster, toast } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import "../Cart/Order.css";
 
 const AdminWelcome = () => {

@@ -2,7 +2,7 @@ import './App.css';
 import Home from './components/Layout/Home';
 import Navbar from './components/Layout/Navbar';
 import { Route, Routes } from 'react-router-dom';
-import RestaurantMenu from  './components/Menus/ShopMenu'
+
 import Signup from './components/User/Signup';
 import Login from './components/User/Login';
 import {Provider} from 'react-redux'
