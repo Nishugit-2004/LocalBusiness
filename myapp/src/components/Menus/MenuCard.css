@@ -1,0 +1,117 @@
+.menu-card {
+    padding: 5px;
+    margin: 10px;
+    width: 220px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  .menu-image {
+    width: 100%;
+    height: 200px;
+    cursor: pointer;
+  }
+  .menu-image:hover{
+    transition: 3s;
+    transform: scale(1.1);
+  
+  }
+  .menu-img div{
+    position:absolute;
+    width: 100%;
+    background-color: black;
+  }
+  .relative .absolute {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .relative:hover .absolute {
+    opacity: 1;
+  }
+  
+  .menu-name {
+    text-transform: capitalize;
+    color: #12a9a1;
+    font-family: unset;
+  }
+  
+  .menu-description {
+    color: rgba(128, 128, 128, 0.886);
+    font-size: 12px;
+    font-family: 'Roboto Slab', serif;
+  }
+  
+  .menu-price {
+    
+    color: rgb(57, 56, 56);
+    font-family: 'Roboto Slab', serif;
+    font-size: 14px;
+  }
+  .menu-stock{
+    color: rgb(3, 211, 3);
+    font-size: 14px;
+
+  }
+  
+  .menu-list-container {
+    background-color: white;
+    padding: 20px;
+    margin-top: 50px;
+  }
+  
+  .menu-list-title {
+    text-align: center;
+    color: #333;
+    font-family: 'Roboto Slab', serif;
+  }
+  
+  .menu-list {
+    display: flex;
+    flex-wrap: wrap;
+    
+    justify-content: center;
+  }
+  .btn-add{
+    width: 50%;
+    font-size: 14px;
+    background-color: #12a9a1;
+    border: none;
+    padding: 0.5rem 1rem;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  .btn-add:hover{
+    border: 1px solid #12a9a1 ;
+    background-color: #ffffff;
+    color: #12a9a1;
+    transition: 1s;
+  }
+
+
+  .search-container {
+    margin-bottom: 20px;
+    margin-top: 30px;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    left: 25%;
+  }
+  
+  .search-container input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  .search-container input:focus{
+    outline: none;
+  }

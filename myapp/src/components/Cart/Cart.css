@@ -1,0 +1,34 @@
+/* Navbar.css */
+.cart-total {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-left: 20px;
+    justify-content: space-between;
+  }
+  
+  .payment-h{
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    /* color:#e69500; */
+    color: #12a9a1;
+  }
+  
+  .cart-total .btn {
+    margin-top: 5px;
+    /* background-color: #ffae2c; */
+    background-color: #12a9a1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .cart-total .btn:hover {
+    /* background-color: #e69500; */
+    background-color: #12a9a1;
+  }
+  
+  

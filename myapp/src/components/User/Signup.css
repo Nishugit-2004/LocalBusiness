@@ -1,0 +1,159 @@
+.signup-container {
+    width: 50%;
+    margin: auto;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-form label {
+    margin-bottom: 8px;
+}
+
+.signup-form input {
+
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+    width: 100%;
+}
+.signup-form textarea {
+
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+    width: 100%;
+}
+.signup-form input:focus {
+    outline: none;
+}
+.signup-form textarea:focus {
+    outline: none;
+}
+
+.signup-form button {
+    padding: 10px 20px;
+    background-color:#12a9a1;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+    
+}
+
+.signup-form button:hover {
+    background-color: #12a9a1;
+}
+
+.message {
+    margin-top: 10px;
+    text-align: center;
+}
+
+
+/* login.css */
+
+.login-container {
+    width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 5%;
+    height: auto;
+}
+
+.login-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+    width: 100%;
+}
+.login-form input:focus {
+    outline: none;
+}
+
+
+.login-form button {
+    padding: 10px;
+    background-color: #12a9a1;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.login-form button:hover {
+    background-color:#12a9a1;
+}
+
+
+.login-main{
+    margin-top: 5%;
+    display: flex;
+    width: 100%;
+    position: relative;
+    gap: 100px;
+    color: rgba(128, 128, 128, 0.886);
+    font-size: 14px;
+    
+}
+.login-image{
+    background-image: "../../img/man.png";
+    position: relative;
+    width: 50%;
+    height: 80%;
+   
+    background-size: cover;
+}
+
+.order2_con{
+    display: flex;
+    padding: 5px;
+}
+@media (max-width: 768px){
+    .login-main{
+       flex-direction: column;
+    }
+    .signup-container{
+        width: 100%;
+        margin-top: 20%;
+        
+        
+        
+    }
+    
+    .order2_con{
+        flex-direction: column;
+    }
+    .login-image{
+        width: 100%;
+        background-attachment: fixed;
+    }
+
+    .login-container{
+        width: 100%;
+    }
+}

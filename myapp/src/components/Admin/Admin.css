@@ -1,0 +1,46 @@
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.users-table th,
+.users-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.users-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+.users-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.users-table tr:hover {
+    background-color: #ddd;
+}
+
+.main-order {
+    display: flex;
+  }
+  .order1 {
+    width: 16rem;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #319795;
+    color: white;
+    padding: 1.5rem;
+  }
+  .order2 {
+    margin-left: 16rem;
+    padding: 2rem;
+    flex: 1;
+    min-height: 100vh;
+    background-color: #f9fafb;
+  }
+  
