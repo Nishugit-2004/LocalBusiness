@@ -25,7 +25,7 @@ const AdminSidebar = () => {
     { to: "/admin/analytics", icon: "fa-chart-line", label: "Analytics" },
     { to: "/admin/profile", icon: "fa-user-tie", label: "My Profile" },
     { to: "/admin/add-shop", icon: "fa-plus", label: "Add New Shop" },
-    { to: "/Shop/AddShop", icon: "fa-shop", label: "My Shops" },
+    { to: "/admin/shops", icon: "fa-shop", label: "My Shops" },
     { to: "/admin/alluser", icon: "fa-users", label: "Customer" },
     { to: "/admin/alladmin", icon: "fa-user-shield", label: "Seller" },
     { to: "/admin/allorder", icon: "fa-boxes-stacked", label: "All Orders" },
