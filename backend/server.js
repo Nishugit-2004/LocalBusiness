@@ -18,9 +18,13 @@ const port=4000;
 dotenv.config();
 app.use(cors());
 app.use(express.json())
-dbconnection();
+// Vercel Serverless Architecture explicitly demands awaiting database connections inside the active HTTP Event Loop
+app.use(async (req, res, next) => {
+  await dbconnection();
+  next();
+});
 
-app.use('/Shop',router)
+app.use('/Shop',router);
 app.use('/menus',menuRouter)
 app.use('/user',userRouter);
 app.use('/cart',cartRouter)
