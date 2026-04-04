@@ -102,5 +102,44 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.put('/:id', verifyAdmin, async (req, res) => {
+  try {
+    const { name, description, imageUrl, latitude, longitude, phone, address, category } = req.body;
+    const adminId = req.admin.id;
+
+    const findShop = await FoodItem.findById(req.params.id);
+    if (!findShop || findShop.adminId.toString() !== adminId) {
+      return res.status(403).json({ message: 'Unauthorized or shop not found' });
+    }
+
+    const updateData = { name, description, imageUrl, phone, address, category };
+    
+    if (latitude && longitude) {
+        updateData.location = {
+            type: 'Point',
+            coordinates: [parseFloat(longitude), parseFloat(latitude)]
+        };
+    }
+
+    const updatedShop = await FoodItem.findByIdAndUpdate(req.params.id, updateData, { new: true });
+    res.status(200).json({ message: 'Shop updated successfully!', shop: updatedShop });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.delete('/:id', verifyAdmin, async (req, res) => {
+  try {
+    const adminId = req.admin.id;
+    const findShop = await FoodItem.findById(req.params.id);
+    if (!findShop || findShop.adminId.toString() !== adminId) {
+      return res.status(403).json({ message: 'Unauthorized or shop not found' });
+    }
+    await FoodItem.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: 'Shop deleted successfully!' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 export default router;

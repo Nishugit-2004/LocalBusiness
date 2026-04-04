@@ -26,6 +26,7 @@ import ResetPassword from './components/User/ResetPassword';
 import AllFeedback from './components/Admin/AllFeedback';
 import Location from './components/Layout/Location';
 import AddShop from './components/Shop/AddShop';
+import EditShop from './components/Shop/EditShop';
 import AdminShops from './components/Admin/AdminShops';
 import ShopMenu from './components/Menus/ShopMenu';
 import ManageMenu from './components/Admin/ManageMenu';
@@ -81,7 +82,6 @@ function App() {
       <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/shop/:shopId" element={<ShopMenu/>}/>
-          <Route path="/shop/AddShop" element={<AdminShops/>}/>
           
           <Route path="/signup" element={<AuthSelection/>}/>
           <Route path="/login" element={<AuthSelection/>}/>
@@ -106,6 +106,7 @@ function App() {
           <Route path='/admin/allorder' element={<AdminAllorder/>}/>
           <Route path='/admin/contact' element={<AllFeedback/>}/>
           <Route path='/admin/manage-menu/:shopId' element={<ManageMenu/>}/>
+          <Route path='/admin/edit-shop/:id' element={<EditShop/>}/>
           <Route path='/admin/analytics' element={<AdminAnalytics/>}/>
           <Route path='/user/forgotpassword' element={<ForgotPassword/>}/>
           <Route path='/user/resetpassword/:token' element={<ResetPassword/>}/>

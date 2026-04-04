@@ -80,21 +80,29 @@ const AdminShops = () => {
               >
                 <div>
                   <h3 className="text-2xl font-black text-gray-800 mb-2">{shop.name}</h3>
-                  <div className="flex flex-wrap gap-4 text-sm text-gray-500 font-medium">
-                     <span className="flex items-center gap-1">
-                        <i className="fa-solid fa-location-dot text-orange-500"></i> 
-                        {shop.location?.coordinates ? `Loc: ${shop.location.coordinates[1].toFixed(2)}, ${shop.location.coordinates[0].toFixed(2)}` : (typeof shop.location === 'string' ? shop.location : 'Global')}
+                   <div className="flex flex-wrap gap-4 text-[10px] text-gray-400 font-black uppercase tracking-widest">
+                     <span className="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full">
+                        <i className="fa-solid fa-tag text-teal-500"></i> 
+                        {shop.category || 'No Category'}
                      </span>
-                     <span className="flex items-center gap-1">
-                        <i className="fa-solid fa-utensils text-teal-500"></i> {shop.cuisine || 'N/A'}
+                     <span className="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full">
+                        <i className="fa-solid fa-phone text-teal-500"></i> 
+                        {shop.phone || 'N/A'}
+                     </span>
+                     <span className="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full">
+                        <i className="fa-solid fa-map-location-dot text-teal-500"></i> 
+                        {shop.address || 'N/A'}
                      </span>
                   </div>
                 </div>
-                <div className="mt-4 md:mt-0">
-                   <Link to={`/admin/manage-menu/${shop._id}`} className="block bg-teal-600 text-white px-8 py-4 rounded-2xl font-black text-sm hover:bg-teal-700 shadow-xl transform transition active:scale-95 text-center">
-                     MANAGE MENU
-                   </Link>
-                </div>
+                 <div className="mt-4 md:mt-0 flex flex-col sm:flex-row gap-3">
+                    <Link to={`/admin/manage-menu/${shop._id}`} className="block bg-teal-600 text-white px-8 py-4 rounded-2xl font-black text-sm hover:bg-teal-700 shadow-xl transform transition active:scale-95 text-center">
+                      MANAGE MENU
+                    </Link>
+                    <Link to={`/admin/edit-shop/${shop._id}`} className="block bg-white text-gray-500 border-2 border-gray-100 px-8 py-4 rounded-2xl font-black text-sm hover:bg-gray-50 shadow-sm transition active:scale-95 text-center">
+                      EDIT METADATA
+                    </Link>
+                 </div>
               </div>
             ))}
           </div>
