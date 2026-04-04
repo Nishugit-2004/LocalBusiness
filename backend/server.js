@@ -41,19 +41,9 @@ app.post('/api/location', (req, res) => {
   res.json({ message: 'Location received successfully' });
 });
 
-// Prevent Vercel Serverless Crashes by wrapping listen
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(port, () => {
-      console.log(`Server running at http://localhost:${port}/`);
-  });
-}
-
-export default app;
-
-
-app.post('/api/location', async (req, res) => {
+app.post('/api/location/save', async (req, res) => {
   const { latitude, longitude, userId } = req.body;
-  console.log('User location received:', { latitude, longitude });
+  console.log('User location received for saving:', { latitude, longitude });
 
   try {
     await User.findByIdAndUpdate(userId, {
@@ -68,3 +58,12 @@ app.post('/api/location', async (req, res) => {
     res.status(500).json({ message: 'Failed to save location' });
   }
 });
+
+// Prevent Vercel Serverless Crashes by wrapping listen
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}/`);
+  });
+}
+
+export default app;
