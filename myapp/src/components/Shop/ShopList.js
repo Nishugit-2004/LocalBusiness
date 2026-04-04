@@ -11,7 +11,7 @@ function ShopList() {
   const [searchTerm, setSearchTerm] = useState('');
   const [userLocation, setUserLocation] = useState(null);
 
-  // Get User Location on Mount
+  // Get User Location on Mount with Timeout for Mobile protection
   useEffect(() => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -21,9 +21,9 @@ function ShopList() {
         },
         (error) => {
           console.error('Error getting user location:', error);
-          // Set to a default identifier if denied, allowing basic search to still run
           setUserLocation({ latitude: null, longitude: null }); 
-        }
+        },
+        { timeout: 5000, enableHighAccuracy: false } // Trigger faster resolution for mobile
       );
     } else {
         setUserLocation({ latitude: null, longitude: null }); 
@@ -41,7 +41,7 @@ function ShopList() {
         try {
           const params = {};
           if (searchTerm) params.search = searchTerm;
-          if (userLocation.latitude && userLocation.longitude) {
+          if (userLocation?.latitude && userLocation?.longitude) {
               params.lat = userLocation.latitude;
               params.lng = userLocation.longitude;
           }
@@ -81,10 +81,16 @@ function ShopList() {
       {loading ? <Loader /> : (
           <div className="shop-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '40px', justifyContent: 'center', padding: '0 40px' }}>
             {shops.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '80px', color: '#9ca3af' }}>
-                  <i className="fa-solid fa-store-slash" style={{ fontSize: '4rem', marginBottom: '20px' }}></i>
-                  <p style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>No geographical or keyword matches discovered.</p>
-              </div>
+               <div style={{ textAlign: 'center', padding: '80px', color: '#9ca3af' }}>
+                   <i className="fa-solid fa-store-slash" style={{ fontSize: '4rem', marginBottom: '20px' }}></i>
+                   <p style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#374151' }}>No shops found in your specific area.</p>
+                   <button 
+                      onClick={() => { setUserLocation({ latitude: null, longitude: null }); setSearchTerm('') }} 
+                      className="mt-6 px-8 py-3 bg-teal-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg hover:bg-teal-700 transition"
+                   >
+                       Show All Global Shops
+                   </button>
+               </div>
             ) : (
               shops.map((shop) => (
                 <ShopItem

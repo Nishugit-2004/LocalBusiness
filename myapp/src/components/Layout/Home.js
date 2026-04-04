@@ -44,7 +44,7 @@ const Home = () => {
           )}
         </div>
       </div>
-      <ShopList />
+      {!AdminAuthenticated && <ShopList />}
 
       {!anyAuth && (
         <div className="home-page2">
