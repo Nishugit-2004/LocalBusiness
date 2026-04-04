@@ -11,6 +11,14 @@ const FoodItemSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
     },
+    phone: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
     views: {
         type: Number,
         default: 0,

@@ -7,10 +7,10 @@ const router = express.Router();
 
 router.post('/', verifyAdmin, async (req, res) => {
   try {
-    const { name, description, imageUrl, latitude, longitude } = req.body;
+    const { name, description, imageUrl, latitude, longitude, phone, address } = req.body;
     const adminId = req.admin.id;  
     
-    const shopData = { name, description, imageUrl, adminId };
+    const shopData = { name, description, imageUrl, adminId, phone, address };
     
     if (latitude && longitude) {
       shopData.location = { 
@@ -22,7 +22,7 @@ router.post('/', verifyAdmin, async (req, res) => {
     const newFoodItem = new FoodItem(shopData);
     await newFoodItem.save();
 
-    res.status(201).json({ message: 'Restaurant added successfully!', foodItem: newFoodItem });
+    res.status(201).json({ message: 'Store added successfully!', foodItem: newFoodItem });
   } catch (err) {
     console.error('Error adding restaurant:', err);
     res.status(500).json({ message: 'Error adding restaurant. Please try again.' });

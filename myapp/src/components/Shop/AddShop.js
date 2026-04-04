@@ -12,6 +12,8 @@ const AddShop = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [locationLoading, setLocationLoading] = useState(false);
@@ -45,7 +47,9 @@ const AddShop = () => {
       imageUrl,
       adminId,
       latitude,
-      longitude
+      longitude,
+      phone,
+      address
     };
 
     try {
@@ -64,6 +68,8 @@ const AddShop = () => {
       setName("");
       setDescription("");
       setImageUrl("");
+      setPhone("");
+      setAddress("");
       setLatitude(null);
       setLongitude(null);
     } catch (error) {
@@ -99,6 +105,30 @@ const AddShop = () => {
                  value={description}
                  onChange={(e) => setDescription(e.target.value)}
                  className="w-full px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-teal-500 outline-none transition bg-gray-50 font-medium min-h-[120px]"
+               />
+            </div>
+
+            <div className="space-y-2">
+               <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Business Phone</label>
+               <input
+                 type="tel"
+                 placeholder="+91..."
+                 value={phone}
+                 onChange={(e) => setPhone(e.target.value)}
+                 className="w-full px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-teal-500 outline-none transition bg-gray-50 font-medium"
+                 required
+               />
+            </div>
+
+            <div className="space-y-2">
+               <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Shop Address (Manual)</label>
+               <input
+                 type="text"
+                 placeholder="Street, City, Pincode..."
+                 value={address}
+                 onChange={(e) => setAddress(e.target.value)}
+                 className="w-full px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-teal-500 outline-none transition bg-gray-50 font-medium"
+                 required
                />
             </div>
 
