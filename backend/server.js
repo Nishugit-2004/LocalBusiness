@@ -12,7 +12,15 @@ import reviewRouter from './Routes/reviewRoutes.js';
 import wishlistRouter from './Routes/wishlistRoutes.js';
 import dotenv from 'dotenv'
 import User from './model/UserSchema.js';
+import { Server } from 'socket.io';
+import http from 'http';
+import chatRouter from './Routes/chatRoute.js';
 const app=express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: { origin: "*", methods: ["GET", "POST"] }
+});
+app.set('io', io);
 app.use(bodyParser.json())
 const port=4000;
 dotenv.config();
@@ -32,6 +40,7 @@ app.use('/order',orderRouter)
 app.use('/admin',adminRouter)
 app.use('/reviews', reviewRouter)
 app.use('/wishlist', wishlistRouter)
+app.use('/chat', chatRouter)
  
 app.get('/',(req,res)=>{
   res.send("ker dikhaya")
@@ -63,9 +72,23 @@ app.post('/api/location/save', async (req, res) => {
   }
 });
 
+// Socket.io Connection Logic
+io.on('connection', (socket) => {
+  console.log('User connected to socket:', socket.id);
+
+  socket.on('join_room', (roomId) => {
+    socket.join(roomId);
+    console.log(`User joined room: ${roomId}`);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
+
 // Prevent Vercel Serverless Crashes by wrapping listen
 if (process.env.NODE_ENV !== 'production') {
-  app.listen(port, () => {
+  server.listen(port, () => {
       console.log(`Server running at http://localhost:${port}/`);
   });
 }

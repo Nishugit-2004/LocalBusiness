@@ -1,14 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import Loader from '../Loader';
 import { API_BASE_URL } from '../../api';
+import ChatRoom from '../Chat/ChatRoom';
+import io from 'socket.io-client';
+
+const socket = io(API_BASE_URL.replace('/api', '')); 
 
 const OrderCard = ({ order, onRemove }) => {
   const [loading, setLoading] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+  const [liveStatus, setLiveStatus] = useState(order.status || 'Pending');
 
+  const userData = JSON.parse(sessionStorage.getItem('userData'));
   const adminData = JSON.parse(sessionStorage.getItem('adminData'));
   const isAdmin = !!adminData?.token;
+  const userId = userData?.user?.id;
+  const adminId = order.shopId || order.adminId; // Priority to root shopId
+
+  useEffect(() => {
+    socket.emit('join_room', order._id);
+    socket.on('status_update', (data) => {
+       if(data.orderId === order._id) {
+          setLiveStatus(data.status);
+          toast.info(`Order status updated to: ${data.status}`);
+       }
+    });
+    return () => socket.off('status_update');
+  }, [order._id]);
 
   const handleRemoveOrder = async () => {
     setLoading(true);
@@ -40,7 +60,7 @@ const OrderCard = ({ order, onRemove }) => {
   };
 
   const steps = ['Pending', 'Preparing', 'Out for Delivery', 'Delivered'];
-  const currentStepIndex = steps.indexOf(order.status || 'Pending');
+  const currentStepIndex = steps.indexOf(liveStatus);
 
   if (loading) return <Loader />;
 
@@ -106,8 +126,8 @@ const OrderCard = ({ order, onRemove }) => {
                       <button 
                         key={`btn-${step}`}
                         onClick={() => handleUpdateStatus(step)}
-                        disabled={order.status === step}
-                        className={`text-[10px] uppercase font-black tracking-wider px-3 py-2 rounded-lg transition-all ${order.status === step ? 'bg-teal-600 text-white shadow-md' : 'text-gray-400 hover:bg-teal-50 hover:text-teal-600'}`}
+                        disabled={liveStatus === step}
+                        className={`text-[10px] uppercase font-black tracking-wider px-3 py-2 rounded-lg transition-all ${liveStatus === step ? 'bg-teal-600 text-white shadow-md' : 'text-gray-400 hover:bg-teal-50 hover:text-teal-600'}`}
                       >
                          {step}
                       </button>
@@ -115,6 +135,26 @@ const OrderCard = ({ order, onRemove }) => {
                 </div>
              </div>
            )}
+        </div>
+
+        {/* CHAT TOGGLE */}
+        <div className="mt-6 border-t border-gray-100 pt-4 flex flex-col items-center">
+            <button 
+                onClick={() => setShowChat(!showChat)}
+                className="flex items-center gap-2 text-teal-600 font-black text-[10px] tracking-widest uppercase hover:text-teal-700 transition"
+            >
+                <i className={`fa-solid ${showChat ? 'fa-comment-slash' : 'fa-comment-dots'} text-lg`}></i>
+                {showChat ? 'Hide Support Chat' : 'Open Support Chat'}
+            </button>
+            
+            {showChat && (
+                <ChatRoom 
+                    orderId={order._id}
+                    userId={userId}
+                    adminId={adminId}
+                    userRole={isAdmin ? 'Admin' : 'User'}
+                />
+            )}
         </div>
       </div>
 

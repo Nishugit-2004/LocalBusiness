@@ -57,6 +57,13 @@ router.post('/orderdetails', async (req, res) => {
       const { status } = req.body;
       const order = await Order.findByIdAndUpdate(req.params.id, { status }, { new: true });
       if (!order) return res.status(404).json({ message: 'Order not found' });
+      
+      // Emit socket notification
+      const io = req.app.get('io');
+      if (io) {
+        io.to(req.params.id).emit('status_update', { orderId: req.params.id, status });
+      }
+
       res.json(order);
     } catch (err) {
       res.status(500).json({ message: err.message });
