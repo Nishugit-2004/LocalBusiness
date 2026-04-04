@@ -79,19 +79,23 @@ function OrderList() {
         
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="bg-white shadow-xl rounded-3xl p-6 border border-gray-100">
-             <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
-               <span className="text-gray-400 font-bold uppercase tracking-widest text-xs">Filter by date</span>
-               <div className="relative w-full md:w-auto">
+             <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10">
+               <div className="text-center md:text-left">
+                  <span className="text-gray-400 font-black uppercase tracking-widest text-[10px] block mb-1">Administrative Log</span>
+                  <h2 className="text-xl font-bold text-gray-800">Master Order Ledger</h2>
+               </div>
+               <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                 <span className="text-gray-400 font-bold uppercase tracking-widest text-[9px] whitespace-nowrap">Filter by date:</span>
                  <input
                    type="date"
                    value={searchDate}
                    onChange={handleSearchDateChange}
-                   className="w-full md:w-auto px-6 py-3 rounded-2xl border-2 border-orange-100 focus:border-orange-500 outline-none transition font-bold text-gray-700"
+                   className="w-full sm:w-auto px-6 py-3 rounded-2xl border-2 border-orange-100 focus:border-orange-500 bg-gray-50 outline-none transition font-bold text-gray-700 text-sm shadow-sm"
                  />
                </div>
              </div>
 
-             <div className="overflow-x-auto rounded-2xl shadow-inner bg-gray-50 border border-gray-100">
+             <div className="hidden lg:block overflow-x-auto rounded-2xl shadow-inner bg-gray-50 border border-gray-100">
                 <table className="min-w-full text-left">
                   <thead className="bg-orange-500 text-white font-bold uppercase text-[10px] tracking-[0.2em]">
                     <tr>
@@ -121,14 +125,22 @@ function OrderList() {
              </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mt-10">
-            {order.map((order) => (
-              <OrderCard
-                key={order._id}
-                order={order}
-                onRemove={handleRemoveOrder}
-              />
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 pb-20">
+            {filteredOrders.length > 0 ? (
+              filteredOrders.map((order) => (
+                <div key={order._id} className="transform transition hover:scale-[1.02]">
+                  <OrderCard
+                    order={order}
+                    onRemove={handleRemoveOrder}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full py-20 text-center">
+                 <i className="fa-solid fa-calendar-xmark text-5xl text-gray-200 mb-4"></i>
+                 <p className="text-gray-400 font-bold">No orders found for this date selection.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
