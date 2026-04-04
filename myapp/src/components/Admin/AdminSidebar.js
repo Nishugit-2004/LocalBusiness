@@ -20,8 +20,9 @@ const AdminSidebar = () => {
     window.location.reload();
   };
 
-  const navItems = [
+    const navItems = [
     { to: "/admin/welcome", icon: "fa-house", label: "Home" },
+    { to: "/admin/analytics", icon: "fa-chart-line", label: "Analytics" },
     { to: "/admin/profile", icon: "fa-user-tie", label: "My Profile" },
     { to: "/admin/add-shop", icon: "fa-plus", label: "Add New Shop" },
     { to: "/Shop/AddShop", icon: "fa-shop", label: "My Shops" },

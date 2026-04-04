@@ -26,7 +26,7 @@ router.post('/signup', async (req, res) => {
         });
         await admin.save();
 
-        const payload = { admin: { id: admin.id } };
+        const payload = { admin: { id: admin.id, role: admin.role } };
         const token = jwt.sign(payload, 'admintoken', { expiresIn: '1h' });
 
         res.json({ token });
@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        const payload = { admin: { id: admin.id ,name: admin.name, email: admin.email} };
+        const payload = { admin: { id: admin.id ,name: admin.name, email: admin.email, role: admin.role} };
         const token = jwt.sign(payload, 'admintoken', { expiresIn: '1h' });
 
         res.json({
@@ -58,6 +58,7 @@ router.post('/login', async (req, res) => {
                 id:admin.id,
                 name:admin.name,
                 email:admin.email,
+                role:admin.role
             }
         })
 

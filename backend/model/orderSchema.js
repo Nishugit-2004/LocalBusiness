@@ -13,9 +13,15 @@ const orderSchema = new mongoose.Schema({
     },
   ],
   restaurantName: String,
+  shopId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodItem' },  // Binds the order dynamically to the root shop
   totalPrice: Number,
   discountedPrice: Number,
   discount: Number,
+  status: {
+    type: String,
+    enum: ['Pending', 'Preparing', 'Out for Delivery', 'Delivered'],
+    default: 'Pending'
+  },
   orderDate: { type: Date, default: Date.now },
 });
 

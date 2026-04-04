@@ -1,5 +1,7 @@
 import express from 'express';
 import Order from '../model/orderSchema.js';
+import Shop from '../model/ShopSchema.js';
+import { verifyAdmin } from '../middleware/authMiddleware.js';
 import stripeLib from 'stripe'
 
 const router = express.Router();  
@@ -27,17 +29,17 @@ router.delete('/delete', async (req, res) => {
 
 
 router.post('/orderdetails', async (req, res) => {
-    const { userId, userName,items, restaurantName, totalPrice, discountedPrice, discount } = req.body;
+    const { userId, userName, items, restaurantName, shopId, totalPrice, discountedPrice, discount } = req.body;
 
     const order = new Order({
       userId,
       userName,
       items,
       restaurantName,
+      shopId,
       totalPrice,
       discountedPrice,
       discount,
-
     });
   
     try {
@@ -47,6 +49,66 @@ router.post('/orderdetails', async (req, res) => {
       });
     } catch (err) {
       res.status(400).json({ message: err.message });
+    }
+  });
+
+  router.put('/:id/status', verifyAdmin, async (req, res) => {
+    try {
+      const { status } = req.body;
+      const order = await Order.findByIdAndUpdate(req.params.id, { status }, { new: true });
+      if (!order) return res.status(404).json({ message: 'Order not found' });
+      res.json(order);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  router.get('/seller-analytics', verifyAdmin, async (req, res) => {
+    try {
+        const adminId = req.admin.id;
+        const shops = await Shop.find({ adminId });
+        const shopIds = shops.map(s => s._id);
+
+        if (shopIds.length === 0) {
+            return res.json({ totalRevenue: 0, totalOrders: 0, popularItems: [] });
+        }
+
+        // Aggregate across matching orders
+        const pipeline = [
+            { // Match orders where the root shopId or any item's restaurantId belongs to the seller
+                $match: {
+                    $or: [
+                        { shopId: { $in: shopIds } },
+                        { 'items.restaurantId': { $in: shopIds } }
+                    ]
+                }
+            },
+            {
+                $facet: {
+                    overview: [
+                        { $group: { _id: null, totalRevenue: { $sum: "$totalPrice" }, totalOrders: { $sum: 1 } } }
+                    ],
+                    popularItems: [
+                        { $unwind: "$items" },
+                        { $match: { "items.restaurantId": { $in: shopIds } } },
+                        { $group: { _id: "$items.name", quantitySold: { $sum: "$items.quantity" }, revenue: { $sum: { $multiply: ["$items.price", "$items.quantity"] } } } },
+                        { $sort: { quantitySold: -1 } },
+                        { $limit: 5 }
+                    ]
+                }
+            }
+        ];
+
+        const results = await Order.aggregate(pipeline);
+        const overview = results[0].overview[0] || { totalRevenue: 0, totalOrders: 0 };
+        res.json({
+            totalRevenue: overview.totalRevenue,
+            totalOrders: overview.totalOrders,
+            popularItems: results[0].popularItems
+        });
+    } catch (err) {
+        console.error('Analytics Error:', err);
+        res.status(500).json({ message: 'Server error fetching analytics' });
     }
   });
 

@@ -24,11 +24,20 @@ export const verifyAdmin = (req, res, next) => {
   
     try {
       const decoded = jwt.verify(token, 'admintoken'); // Match the secret used in login
-      req.admin = decoded.admin; // will have id, name, email
+      req.admin = decoded.admin; // will have id, name, email, role
       next();
     } catch (err) {
       res.status(403).json({ message: 'Token is not valid' });
     }
-  };
+};
+
+export const verifySuperAdmin = (req, res, next) => {
+    verifyAdmin(req, res, () => {
+        if (req.admin.role !== 'SuperAdmin') {
+            return res.status(403).json({ message: 'Access Denied: SuperAdmin Clearance Required.' });
+        }
+        next();
+    });
+};
 
 export default authMiddleware;
