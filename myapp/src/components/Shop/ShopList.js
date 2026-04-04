@@ -9,7 +9,15 @@ function ShopList() {
   const [shops, setShops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [userLocation, setUserLocation] = useState(null);
+
+  const categories = [
+    'Daily Needs', 'Hardware & Home Improvement', 'Fashion & Clothing', 
+    'Food & Dining', 'Electronics & Gadgets', 'Automobile & Services', 
+    'Health & Medical', 'Home Services', 'Education & Training', 
+    'Professional Services'
+  ];
 
   // Get User Location on Mount with Timeout for Mobile protection
   useEffect(() => {
@@ -41,6 +49,7 @@ function ShopList() {
         try {
           const params = {};
           if (searchTerm) params.search = searchTerm;
+          if (selectedCategory) params.category = selectedCategory;
           if (userLocation?.latitude && userLocation?.longitude) {
               params.lat = userLocation.latitude;
               params.lng = userLocation.longitude;
@@ -59,7 +68,7 @@ function ShopList() {
     }, 500); // 500ms Debounce
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, userLocation]);
+  }, [searchTerm, userLocation, selectedCategory]);
 
   return (
     <div style={{ backgroundColor: 'white', minHeight: '100vh', paddingBottom: '50px' }}>
@@ -70,7 +79,7 @@ function ShopList() {
       <div className="search-container" style={{ maxWidth: '700px', margin: '30px auto', position: 'relative' }}>
         <input
           type="text"
-          placeholder="Search securely by exact shop name or detailed keywords..."
+          placeholder="Search securely by shop name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{ width: '100%', padding: '20px 50px 20px 30px', borderRadius: '40px', border: '2px solid #f3f4f6', boxShadow: '0 10px 25px rgba(0,0,0,0.05)', fontSize: '1.1rem', outline: 'none' }}
@@ -78,17 +87,44 @@ function ShopList() {
         <i className="fa-solid fa-magnifying-glass" style={{ position: 'absolute', right: '30px', top: '23px', color: '#0d9488', fontSize: '1.2rem' }}></i>
       </div>
 
+      {/* CATEGORY FILTER STRIP */}
+      <div className="flex overflow-x-auto gap-3 pb-8 px-6 no-scrollbar snap-x scroll-smooth max-w-7xl mx-auto">
+          <button
+              onClick={() => setSelectedCategory('')}
+              className={`whitespace-nowrap px-6 py-3 rounded-2xl font-black text-[10px] tracking-widest uppercase transition-all snap-start ${
+                  selectedCategory === '' 
+                  ? 'bg-teal-600 text-white shadow-xl scale-105' 
+                  : 'bg-white text-teal-600 border-2 border-teal-50 shadow-sm hover:border-teal-200'
+              }`}
+          >
+              All Categories
+          </button>
+          {categories.map((cat) => (
+              <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`whitespace-nowrap px-6 py-3 rounded-2xl font-black text-[10px] tracking-widest uppercase transition-all snap-start ${
+                      selectedCategory === cat 
+                      ? 'bg-teal-600 text-white shadow-xl scale-105' 
+                      : 'bg-white text-gray-500 border-2 border-gray-50 shadow-sm hover:border-teal-200 hover:text-teal-600'
+                  }`}
+              >
+                  {cat}
+              </button>
+          ))}
+      </div>
+
       {loading ? <Loader /> : (
           <div className="shop-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '40px', justifyContent: 'center', padding: '0 40px' }}>
             {shops.length === 0 ? (
                <div style={{ textAlign: 'center', padding: '80px', color: '#9ca3af' }}>
                    <i className="fa-solid fa-store-slash" style={{ fontSize: '4rem', marginBottom: '20px' }}></i>
-                   <p style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#374151' }}>No shops found in your specific area.</p>
+                   <p style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#374151' }}>No shops found in this category or area.</p>
                    <button 
-                      onClick={() => { setUserLocation({ latitude: null, longitude: null }); setSearchTerm('') }} 
+                      onClick={() => { setUserLocation({ latitude: null, longitude: null }); setSearchTerm(''); setSelectedCategory('') }} 
                       className="mt-6 px-8 py-3 bg-teal-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg hover:bg-teal-700 transition"
                    >
-                       Show All Global Shops
+                       Clear All Filters
                    </button>
                </div>
             ) : (

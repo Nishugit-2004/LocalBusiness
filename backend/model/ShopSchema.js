@@ -19,6 +19,17 @@ const FoodItemSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    category: {
+        type: String,
+        enum: [
+            'Daily Needs', 'Hardware & Home Improvement', 'Fashion & Clothing', 
+            'Food & Dining', 'Electronics & Gadgets', 'Automobile & Services', 
+            'Health & Medical', 'Home Services', 'Education & Training', 
+            'Professional Services'
+        ],
+        required: true,
+        default: 'Daily Needs'
+    },
     views: {
         type: Number,
         default: 0,

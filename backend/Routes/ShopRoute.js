@@ -32,7 +32,7 @@ router.post('/', verifyAdmin, async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const { search, lat, lng } = req.query;
+    const { search, lat, lng, category } = req.query;
     let pipeline = [];
 
     // $geoNear MUST be the very first stage in the pipeline
@@ -46,10 +46,15 @@ router.get('/', async (req, res) => {
       });
     }
 
+    if (category) {
+      pipeline.push({
+        $match: { category }
+      });
+    }
+
     if (search && search.trim() !== '') {
       pipeline.push({
         $match: {
-          // Alternatively we can use a soft regex if MongoDB fails to instantly bind the Text Index dynamically
           name: { $regex: search, $options: 'i' }
         }
       });

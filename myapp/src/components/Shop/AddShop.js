@@ -14,6 +14,7 @@ const AddShop = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [category, setCategory] = useState("Daily Needs");
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [locationLoading, setLocationLoading] = useState(false);
@@ -32,6 +33,13 @@ const AddShop = () => {
     }
   }, [isAuthenticated, navigate]);
 
+  const categories = [
+    'Daily Needs', 'Hardware & Home Improvement', 'Fashion & Clothing', 
+    'Food & Dining', 'Electronics & Gadgets', 'Automobile & Services', 
+    'Health & Medical', 'Home Services', 'Education & Training', 
+    'Professional Services'
+  ];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -49,7 +57,8 @@ const AddShop = () => {
       latitude,
       longitude,
       phone,
-      address
+      address,
+      category
     };
 
     try {
@@ -70,6 +79,7 @@ const AddShop = () => {
       setImageUrl("");
       setPhone("");
       setAddress("");
+      setCategory("Daily Needs");
       setLatitude(null);
       setLongitude(null);
     } catch (error) {
@@ -106,6 +116,18 @@ const AddShop = () => {
                  onChange={(e) => setDescription(e.target.value)}
                  className="w-full px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-teal-500 outline-none transition bg-gray-50 font-medium min-h-[120px]"
                />
+            </div>
+
+            <div className="space-y-2">
+               <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Business Category</label>
+               <select
+                 value={category}
+                 onChange={(e) => setCategory(e.target.value)}
+                 className="w-full px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-teal-500 outline-none transition bg-gray-50 font-black text-sm uppercase tracking-wider text-teal-800"
+                 required
+               >
+                 {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+               </select>
             </div>
 
             <div className="space-y-2">
