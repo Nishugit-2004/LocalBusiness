@@ -12,7 +12,7 @@ const AdminWelcome = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.admin.isAuthenticated);
 
-  const adminData = JSON.parse(sessionStorage.getItem("adminData"));
+  const adminData = JSON.parse(localStorage.getItem("adminData"));
   const username = adminData ? adminData.admin.name : "Admin";
 
   useEffect(() => {

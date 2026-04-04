@@ -16,8 +16,8 @@ const AdminShops = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.admin.isAuthenticated);
 
-  // Get adminData from sessionStorage
-  const adminData = JSON.parse(sessionStorage.getItem('adminData'));
+  // Get adminData from localStorage
+  const adminData = JSON.parse(localStorage.getItem('adminData'));
   const adminId = adminData?.admin?.id;
   const adminName = adminData?.admin?.name;
 
@@ -35,7 +35,7 @@ const AdminShops = () => {
     if (!isAuthenticated) return;
     const fetchShops = async () => {
       if (!adminId) {
-        setError('Admin ID not found in sessionStorage.');
+        setError('Admin ID not found in localStorage.');
         setLoading(false);
         return;
       }

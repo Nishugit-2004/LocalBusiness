@@ -11,7 +11,7 @@ import UserSidebar from './UserSidebar';
 
 const Profile = () => {
   const [userData, setUserData] = useState(() => {
-    const storedUserData = sessionStorage.getItem('userData');
+    const storedUserData = localStorage.getItem('userData');
     return storedUserData ? JSON.parse(storedUserData) : null;
   });
 
@@ -50,7 +50,7 @@ const Profile = () => {
       );
 
       const updatedUserData = response.data;
-      sessionStorage.setItem(
+      localStorage.setItem(
         'userData',
         JSON.stringify({ user: { ...updatedUserData, id: updatedUserData._id }, token: token })
       );

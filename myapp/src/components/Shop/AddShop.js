@@ -35,7 +35,7 @@ const AddShop = () => {
 
     if (!isAuthenticated) return;
 
-    const adminData = JSON.parse(sessionStorage.getItem("adminData"));
+    const adminData = JSON.parse(localStorage.getItem("adminData"));
     const adminId = adminData?.admin?.id;
     const token = adminData?.token;
 

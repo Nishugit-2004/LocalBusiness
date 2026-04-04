@@ -18,7 +18,7 @@ const MenuCard = ({ menu }) => {
     const [reviews, setReviews] = React.useState([]);
     const [averageRating, setAverageRating] = React.useState(0);
 
-    const token = JSON.parse(sessionStorage.getItem('userData'))?.token;
+    const token = JSON.parse(localStorage.getItem('userData'))?.token;
 
     React.useEffect(() => {
         axios.get(`${API_BASE_URL}/reviews/${menu._id}`)
@@ -60,7 +60,7 @@ const MenuCard = ({ menu }) => {
     const handleAdd = (menu) => {
         if (!isAuthenticated) {
             alert("If User Please Login First!");
-            sessionStorage.clear();
+            localStorage.clear();
             navigate('/user/login');
             window.location.reload();
         } else {

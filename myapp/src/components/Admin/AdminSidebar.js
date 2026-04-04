@@ -13,7 +13,7 @@ const AdminSidebar = () => {
   if (!isAuthenticated) return null;
 
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch(adminlogout());
     toast.success("Logged Out Successfully!");
     navigate("/");

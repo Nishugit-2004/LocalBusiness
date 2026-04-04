@@ -9,7 +9,7 @@ const UserSidebar = () => {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch(logout());
     toast.success("Logged Out Successfully!");
     navigate("/");

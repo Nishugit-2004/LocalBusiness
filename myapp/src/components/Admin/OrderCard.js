@@ -16,7 +16,7 @@ function OrderList() {
 
   useEffect(() => {
     const fetchorders = async () => {
-      const admindata = JSON.parse(sessionStorage.getItem("Data"));
+      const admindata = JSON.parse(localStorage.getItem("Data"));
       const token = admindata.token;
       if (!token) {
         toast.error("No authorized user found");
@@ -41,7 +41,7 @@ function OrderList() {
   }, [navigate]);
 
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch(adminlogout());
     toast.success("Logged Out Successfully!");
 

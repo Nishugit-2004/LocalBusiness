@@ -13,8 +13,8 @@ const OrderCard = ({ order, onRemove }) => {
   const [showChat, setShowChat] = useState(false);
   const [liveStatus, setLiveStatus] = useState(order.status || 'Pending');
 
-  const userData = JSON.parse(sessionStorage.getItem('userData'));
-  const adminData = JSON.parse(sessionStorage.getItem('adminData'));
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const adminData = JSON.parse(localStorage.getItem('adminData'));
   const isAdmin = !!adminData?.token;
   const userId = userData?.user?.id;
   const adminId = order.shopId || order.adminId; // Priority to root shopId

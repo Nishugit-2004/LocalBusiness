@@ -3,7 +3,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const loadState = () => {
     try {
-        const serializedState = sessionStorage.getItem('cart');
+        const serializedState = localStorage.getItem('cart');
         return serializedState ? JSON.parse(serializedState) : [];
     } catch (e) {
         console.warn('Could not load state', e);
@@ -14,7 +14,7 @@ const loadState = () => {
 const saveState = (state) => {
     try {
         const serializedState = JSON.stringify(state);
-        sessionStorage.setItem('cart', serializedState);
+        localStorage.setItem('cart', serializedState);
     } catch (e) {
         console.warn('Could not save state', e);
     }
@@ -44,7 +44,7 @@ const CartSlice=createSlice({
         clearCart(state){
             const newState=[];
             saveState(newState)
-            sessionStorage.removeItem('cart')
+            localStorage.removeItem('cart')
             return newState;
         },
         setItems(state, action) {

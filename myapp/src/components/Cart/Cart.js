@@ -13,7 +13,7 @@ export const Cart = () => {
   const items = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
-  const userData = JSON.parse(sessionStorage.getItem('userData'));
+  const userData = JSON.parse(localStorage.getItem('userData'));
   const userId = userData?.user?.id || null;
   const username = userData?.user?.name || '';
   const [restaurantNames, setRestaurantNames] = useState({});
@@ -64,7 +64,7 @@ export const Cart = () => {
       const stripe = await stripePromise;
 
       dispatch(clearCart());
-      sessionStorage.removeItem('cart');
+      localStorage.removeItem('cart');
       toast.success('Redirecting to payment...');
       await stripe.redirectToCheckout({ sessionId: res.data.id });
     } catch (error) {

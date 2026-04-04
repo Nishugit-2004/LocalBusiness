@@ -15,10 +15,10 @@ const Navbar = () => {
   const items = useSelector((state) => state.cart);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const adminData = JSON.parse(sessionStorage.getItem("adminData"));
+  const adminData = JSON.parse(localStorage.getItem("adminData"));
   const adminname = adminData ? adminData.admin.name : null;
 
-  const userData = JSON.parse(sessionStorage.getItem("userData"));
+  const userData = JSON.parse(localStorage.getItem("userData"));
   const username = userData ? userData.user.name : null;
   const userProfilePic = userData ? userData.user.profilePic : null;
 
@@ -27,7 +27,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch(logout());
     toast.success("Logged out successfully!");
     navigate("/");

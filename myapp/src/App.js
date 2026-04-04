@@ -42,7 +42,7 @@ const CartSyncManager = () => {
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart);
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
-    const token = JSON.parse(sessionStorage.getItem('userData'))?.token;
+    const token = JSON.parse(localStorage.getItem('userData'))?.token;
 
     // Pull from Database when Auth confirms
     React.useEffect(() => {

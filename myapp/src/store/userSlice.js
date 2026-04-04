@@ -2,8 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const loadUserState = () => {
   try {
-      const serializedState = sessionStorage.getItem('userData');
-      return serializedState ? JSON.parse(serializedState) : null;
+      const serializedState = localStorage.getItem('userData');
+      if (!serializedState) return null;
+      const data = JSON.parse(serializedState);
+      return {
+          user: data.user,
+          token: data.token,
+          isAuthenticated: true,
+          name: data.user?.name,
+          email: data.user?.email,
+          phone: data.user?.phone
+      };
   } catch (e) {
       console.warn('Could not load user state', e);
       return null;
@@ -14,10 +23,10 @@ const initialState = {
   user: null,
   isAuthenticated: false,
   token: null,
-  name:null,
-  email:null,
-  pone:null,
-  ...loadUserState()
+  name: null,
+  email: null,
+  phone: null,
+  ...(loadUserState() || {})
 };
 
 const userSlice = createSlice({
@@ -31,7 +40,7 @@ const userSlice = createSlice({
       state.name = action.payload.user.name;
       state.email = action.payload.user.email;
       state.phone=action.payload.user.phone;
-      sessionStorage.setItem('userData', JSON.stringify(action.payload));
+      localStorage.setItem('userData', JSON.stringify(action.payload));
      
     },
     logout: (state) => {
@@ -41,7 +50,7 @@ const userSlice = createSlice({
       state.name = null;
       state.email = null;
       state.phone=null;
-      sessionStorage.removeItem('userData');
+      localStorage.removeItem('userData');
        
     },
     initializeAuth: (state) => {

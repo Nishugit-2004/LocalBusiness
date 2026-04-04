@@ -20,7 +20,7 @@ function OrderList() {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const userdata = JSON.parse(sessionStorage.getItem('userData'));
+      const userdata = JSON.parse(localStorage.getItem('userData'));
       const userId = userdata?.user?.id;
 
       if (!userId) {

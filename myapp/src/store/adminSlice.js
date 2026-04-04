@@ -2,8 +2,16 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const loadAdminState = () => {
   try {
-      const serializedState = sessionStorage.getItem('adminData');
-      return serializedState ? JSON.parse(serializedState) : null;
+      const serializedState = localStorage.getItem('adminData');
+      if (!serializedState) return null;
+      const data = JSON.parse(serializedState);
+      return {
+          admin: data.admin,
+          token: data.token,
+          isAuthenticated: true,
+          name: data.admin?.name,
+          email: data.admin?.email
+      };
   } catch (e) {
       console.warn('Could not load Admin state', e);
       return null;
@@ -14,9 +22,9 @@ const initialState = {
   admin: null,
   isAuthenticated: false,
   token: null,
-  name:null,
-  email:null,
-  ...loadAdminState()
+  name: null,
+  email: null,
+  ...(loadAdminState() || {})
 };
 
 const adminSlice = createSlice({
@@ -29,7 +37,7 @@ const adminSlice = createSlice({
       state.token = action.payload.token;
       state.name = action.payload.admin.name;
       state.email = action.payload.admin.email;
-      sessionStorage.setItem('adminData', JSON.stringify(action.payload));
+      localStorage.setItem('adminData', JSON.stringify(action.payload));
      
     },
     adminlogout: (state) => {
@@ -38,7 +46,7 @@ const adminSlice = createSlice({
       state.token = null;
       state.name = null;
       state.email = null;
-      sessionStorage.removeItem('adminData');
+      localStorage.removeItem('adminData');
        
     },
     initializeAdmin: (state) => {

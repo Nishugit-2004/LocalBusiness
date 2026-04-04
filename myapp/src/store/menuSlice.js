@@ -26,7 +26,7 @@ const CartSlice=createSlice({
         clearCart(state){
             const newState=[];
             saveState(newState)
-            sessionStorage.removeItem('cart')
+            localStorage.removeItem('cart')
             return newState;
         },
         setItems(state, action) {

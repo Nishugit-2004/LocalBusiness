@@ -29,7 +29,7 @@ const AdminLogin = () => {
     const isAuthenticated = useSelector(state => state.admin.isAuthenticated);
 
     useEffect(() => {
-        const adminData = JSON.parse(sessionStorage.getItem('adminData'));
+        const adminData = JSON.parse(localStorage.getItem('adminData'));
         if (adminData && !isAuthenticated) {
             dispatch(adminlogin(adminData));
         }
@@ -45,7 +45,7 @@ const AdminLogin = () => {
                 token: res.data.token,
             }
             
-            sessionStorage.setItem('adminData', JSON.stringify(adminData));
+            localStorage.setItem('adminData', JSON.stringify(adminData));
             
             dispatch(adminlogin(adminData))
             setFormData(initial)

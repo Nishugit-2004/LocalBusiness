@@ -32,7 +32,7 @@ const Login = () => {
     };
     
     useEffect(() => {
-        const userData = JSON.parse(sessionStorage.getItem('userData'));
+        const userData = JSON.parse(localStorage.getItem('userData'));
         if (userData && !isAuthenticated) {
             dispatch(login(userData));
         }
@@ -48,7 +48,7 @@ const Login = () => {
                 token: res.data.token,
             }
             
-            sessionStorage.setItem('userData', JSON.stringify(userData));
+            localStorage.setItem('userData', JSON.stringify(userData));
             
             dispatch(login(userData))
             setFormData(initial)

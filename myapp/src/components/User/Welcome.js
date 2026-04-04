@@ -12,7 +12,7 @@ const Welcome = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const userData = JSON.parse(sessionStorage.getItem('userData'));
+  const userData = JSON.parse(localStorage.getItem('userData'));
   const username = userData && userData.user ? userData.user.name : 'Guest';
 
   useEffect(() => {

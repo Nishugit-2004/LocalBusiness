@@ -16,7 +16,7 @@ const AdminProfile = () => {
   const isAuthenticated = useSelector((state) => state.admin.isAuthenticated);
 
   const [adminData, setadminData] = useState(() => {
-    const storedadminData = sessionStorage.getItem("adminData");
+    const storedadminData = localStorage.getItem("adminData");
     return storedadminData ? JSON.parse(storedadminData) : null;
   });
 
@@ -57,7 +57,7 @@ const AdminProfile = () => {
       );
 
       const updatedAdminData = response.data;
-      sessionStorage.setItem(
+      localStorage.setItem(
         "adminData",
         JSON.stringify({
           admin: { ...updatedAdminData, id: updatedAdminData._id },

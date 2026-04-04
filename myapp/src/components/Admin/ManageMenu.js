@@ -26,7 +26,7 @@ const ManageMenu = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.admin.isAuthenticated);
 
-  const adminData = JSON.parse(sessionStorage.getItem("adminData"));
+  const adminData = JSON.parse(localStorage.getItem("adminData"));
   const token = adminData?.token;
 
   useEffect(() => {
