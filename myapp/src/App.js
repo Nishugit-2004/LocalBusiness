@@ -41,8 +41,8 @@ function App() {
       <Location/>
       <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/Shop/:ShopId" element={<ShopMenu/>}/>
-          <Route path="/Shop/AddShop" element={<AdminShops/>}/>
+          <Route path="/shop/:shopId" element={<ShopMenu/>}/>
+          <Route path="/shop/AddShop" element={<AdminShops/>}/>
           
           <Route path="/user/signup" element={<Signup/>}/>
           <Route path="/user/login" element={<Login/>}/>
