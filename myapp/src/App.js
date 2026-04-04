@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import Home from './components/Layout/Home';
 import Navbar from './components/Layout/Navbar';
@@ -30,12 +31,48 @@ import ShopMenu from './components/Menus/ShopMenu';
 import ManageMenu from './components/Admin/ManageMenu';
 
 import { Toaster } from 'react-hot-toast';
+import { useSelector, useDispatch } from 'react-redux';
+import { setItems } from './store/cartSlice';
+import axios from 'axios';
+import { API_BASE_URL } from './api';
+
+const CartSyncManager = () => {
+    const dispatch = useDispatch();
+    const cart = useSelector(state => state.cart);
+    const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+    const token = JSON.parse(sessionStorage.getItem('userData'))?.token;
+
+    // Pull from Database when Auth confirms
+    React.useEffect(() => {
+        if (isAuthenticated && token) {
+            axios.get(`${API_BASE_URL}/cart`, { headers: { Authorization: `Bearer ${token}` }})
+            .then(res => {
+                if (res.data?.items) {
+                    const dbCart = res.data.items.map(i => ({...i.menuItemId, quantity: i.quantity}));
+                    if(dbCart.length > 0) dispatch(setItems(dbCart));
+                }
+            }).catch(e => console.error(e));
+        }
+    }, [isAuthenticated, token, dispatch]);
+
+    // Push quietly to database on frontend Cartesian edits
+    React.useEffect(() => {
+        if (isAuthenticated && token) {
+            const mappedItems = cart.map(i => ({ menuItemId: i._id, quantity: i.quantity || 1 }));
+            axios.post(`${API_BASE_URL}/cart/sync`, { items: mappedItems }, { headers: { Authorization: `Bearer ${token}` }})
+               .catch(e => console.error(e));
+        }
+    }, [cart, isAuthenticated, token]);
+
+    return null;
+}
 
 function App() {
   
   return (
      <div className="App">
       <Provider store={store}>
+      <CartSyncManager />
       <Toaster position="top-center" />
       <Navbar/>
       <Location/>

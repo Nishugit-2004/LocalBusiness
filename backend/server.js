@@ -8,6 +8,8 @@ import userRouter from './Routes/userRoute.js';
 import cartRouter from './Routes/cartRoutes.js';
 import orderRouter from './Routes/orderRoute.js';
 import adminRouter from './Routes/AdminRoute.js'
+import reviewRouter from './Routes/reviewRoutes.js';
+import wishlistRouter from './Routes/wishlistRoutes.js';
 import dotenv from 'dotenv'
 import User from './model/UserSchema.js';
 const app=express();
@@ -24,6 +26,8 @@ app.use('/user',userRouter);
 app.use('/cart',cartRouter)
 app.use('/order',orderRouter)
 app.use('/admin',adminRouter)
+app.use('/reviews', reviewRouter)
+app.use('/wishlist', wishlistRouter)
  
 app.get('/',(req,res)=>{
   res.send("ker dikhaya")
