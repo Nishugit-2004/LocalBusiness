@@ -1,46 +1,69 @@
 .users-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin-top: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #edf2f7;
 }
 
 .users-table th,
 .users-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #edf2f7;
 }
 
 .users-table th {
-    background-color: #f2f2f2;
+    background-color: #f7fafc;
     text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #718096;
+    font-weight: 700;
 }
 
-.users-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+.users-table td {
+    font-size: 0.875rem;
+    color: #2d3748;
 }
 
-.users-table tr:hover {
-    background-color: #ddd;
+.users-table tr:last-child td {
+    border-bottom: none;
 }
 
-.main-order {
-    display: flex;
-  }
-  .order1 {
-    width: 16rem;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    background-color: #319795;
-    color: white;
-    padding: 1.5rem;
-  }
-  .order2 {
-    margin-left: 16rem;
-    padding: 2rem;
-    flex: 1;
-    min-height: 100vh;
-    background-color: #f9fafb;
-  }
+.users-table tr:hover td {
+    background-color: #f7fafc;
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px 0;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border-radius: 10px;
+    border: 2px solid #e2e8f0;
+    outline: none;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.search-container input:focus {
+    border-color: #f6ad55;
+    box-shadow: 0 0 0 3px rgba(246, 173, 85, 0.2);
+}
+
+.search-container i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #f6ad55;
+}
   

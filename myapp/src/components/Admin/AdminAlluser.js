@@ -64,37 +64,42 @@ const AdminAlluser=()=> {
     
         
         
-        <div className='order2'>
-        <h1 class=" text-orange-500 font-bold text-xl">All Users</h1>
-            <div className="search-container">
+        <div className="flex-1 mt-6">
+          <h1 className="text-orange-500 font-black text-2xl tracking-widest uppercase mb-6 text-center md:text-left">
+            All Registered Customers
+          </h1>
+          
+          <div className="search-container mx-auto md:mx-0">
             <input
-            type="text"
-            placeholder="Search user..."
-            value={searchTerm}
-            onChange={handleSearch}
+              type="text"
+              placeholder="Search customers..."
+              value={searchTerm}
+              onChange={handleSearch}
             />
-            <i class="fa-solid fa-magnifying-glass absolute right-2 top-5 text-yellow-500"></i>
+            <i className="fa-solid fa-magnifying-glass"></i>
+          </div>
+
+          <div className="overflow-x-auto bg-white rounded-2xl shadow-xl border border-gray-100">
+            <table className="users-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredUser.map((user) => (
+                  <tr key={user._id}>
+                    <td className="font-bold">{user.name}</td>
+                    <td className="text-gray-500">{user.email}</td>
+                    <td className="font-mono text-xs">{user.phone}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-                
-                 <table className="users-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredUser.map(user => (
-                                <tr key={user._id}>
-                                    <td>{user.name}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.phone}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-            </div>
         </div>
     </div>
   );
