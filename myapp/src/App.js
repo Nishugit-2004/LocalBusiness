@@ -104,6 +104,7 @@ function App() {
           <Route path='/admin/alluser' element={<AdminAlluser/>}/>
           <Route path='/admin/alladmin' element={<AdminAlladmin/>}/>
           <Route path='/admin/allorder' element={<AdminAllorder/>}/>
+          <Route path='/admin/shops' element={<AdminShops/>}/>
           <Route path='/admin/contact' element={<AllFeedback/>}/>
           <Route path='/admin/manage-menu/:shopId' element={<ManageMenu/>}/>
           <Route path='/admin/edit-shop/:id' element={<EditShop/>}/>
