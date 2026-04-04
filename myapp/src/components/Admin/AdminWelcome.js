@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { initializeAdmin, adminlogout } from "../../store/adminSlice";
@@ -69,7 +70,6 @@ const AdminWelcome = () => {
           </div>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 };

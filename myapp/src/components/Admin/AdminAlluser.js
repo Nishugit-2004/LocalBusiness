@@ -25,9 +25,8 @@ const AdminAlluser=()=> {
     }
   }, [isAuthenticated, navigate]);
 
-  if (!isAuthenticated) return null;
-
-    useEffect(() => {
+  useEffect(() => {
+    if (!isAuthenticated) return;
         const fetchUsers = async () => {
             setLoading(true)
             try {
@@ -51,6 +50,8 @@ const AdminAlluser=()=> {
           user.name.toLowerCase().includes(searchTerm.toLowerCase())
         ) :
         users;
+
+    if(!isAuthenticated) return null;
 
     if(loading){
         return <Loader/>
@@ -94,7 +95,6 @@ const AdminAlluser=()=> {
                         </tbody>
                     </table>
             </div>
-            <Toaster />
         </div>
     </div>
   );

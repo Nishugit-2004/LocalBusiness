@@ -132,10 +132,8 @@ function OrderList() {
           </div>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 }
-
 
 export default OrderList;

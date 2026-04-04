@@ -67,7 +67,8 @@ const AdminSignup = () => {
             setFormData(initialData)
             console.log(res.data);
         } catch (err) {
-            toast.error('Invalid Details');
+            const errorMessage = err.response?.data?.message || err.message || 'Invalid Details';
+            toast.error(errorMessage);
             setFormData(initialData)
         }finally{
             setLoading(false)

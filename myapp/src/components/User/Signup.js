@@ -77,7 +77,7 @@ const Signup = () => {
         } catch (err) {
             const errorMessage = err.response && err.response.data && err.response.data.message 
                 ? err.response.data.message 
-                : 'Invalid Details!';
+                : err.message || 'Invalid Details!';
             toast.error(errorMessage);
             setFormData(initialData)
         }

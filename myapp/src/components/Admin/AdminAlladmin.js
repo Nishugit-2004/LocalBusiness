@@ -26,9 +26,8 @@ const AdminAlladmin = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  if (!isAuthenticated) return null;
-
   useEffect(() => {
+    if (!isAuthenticated) return;
     const fetchUsers = async () => {
       setLoading(true);
       try {
@@ -55,6 +54,8 @@ const AdminAlladmin = () => {
           user.name.toLowerCase().includes(searchTerm.toLowerCase())
         )
       : users;
+
+  if (!isAuthenticated) return null;
 
   if (loading) {
     return <Loader />;

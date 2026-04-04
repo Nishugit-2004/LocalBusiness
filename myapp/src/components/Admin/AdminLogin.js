@@ -52,7 +52,8 @@ const AdminLogin = () => {
             navigate('/')
             toast.success('Login successful!');
             } catch (err) {
-            toast.error('Invalid Credentials');
+            const errorMessage = err.response?.data?.message || err.message || 'Invalid Credentials';
+            toast.error(errorMessage);
             console.error(err);
             setFormData(initial)
         }finally{
