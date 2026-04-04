@@ -2,9 +2,6 @@ import express from 'express';
 import Order from '../model/orderSchema.js';
 import stripeLib from 'stripe'
 
-const stripe=stripeLib(process.env.secretkey)
-
-
 const router = express.Router();  
 router.get('/orderdetails', async (req, res) => {
   const {userId}=req.query;
@@ -57,7 +54,8 @@ router.post('/orderdetails', async (req, res) => {
   router.post('/create-checkout-session', async (req, res) => {
     const { items, email, totalPrice } = req.body;
   
-    console.log()
+    // Dynamically initialize Stripe to securely pull the Environment Variable at Runtime, bypassing Vercel boot crashes
+    const stripe = stripeLib(process.env.secretkey);
     const line_items = items.map(item => ({
       price_data: {
         currency: 'inr',

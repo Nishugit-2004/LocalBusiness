@@ -66,4 +66,5 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-export default app;
+// Strictly export a Vercel-compatible anonymous function wrapper 
+export default (req, res) => app(req, res);
