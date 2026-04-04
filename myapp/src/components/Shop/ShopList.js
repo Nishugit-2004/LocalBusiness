@@ -11,22 +11,8 @@ function ShopList() {
   const [searchTerm, setSearchTerm] = useState('');
   const [userLocation, setUserLocation] = useState(null);
 
+  // Get User Location on Mount
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`${API_BASE_URL}/shop`);
-        setShops(response.data);
-      } catch (error) {
-        console.error('Error fetching shops:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-
-    // Get user location
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -35,59 +21,80 @@ function ShopList() {
         },
         (error) => {
           console.error('Error getting user location:', error);
-          setUserLocation(null);
+          // Set to a default identifier if denied, allowing basic search to still run
+          setUserLocation({ latitude: null, longitude: null }); 
         }
       );
+    } else {
+        setUserLocation({ latitude: null, longitude: null }); 
     }
   }, []);
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
+  // Primary Fetch logic wrapped in Debounce effect
+  useEffect(() => {
+    // We only want to execute the effect if location tracking has finally resolved (either success or fail)
+    if (!userLocation) return;
 
-  const filteredShopItems = searchTerm !== ''
-    ? shops.filter((shop) =>
-        shop.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : shops;
+    const delayDebounceFn = setTimeout(() => {
+      const fetchShops = async () => {
+        setLoading(true);
+        try {
+          const params = {};
+          if (searchTerm) params.search = searchTerm;
+          if (userLocation.latitude && userLocation.longitude) {
+              params.lat = userLocation.latitude;
+              params.lng = userLocation.longitude;
+          }
 
-  if (loading) {
-    return <Loader />;
-  }
+          const response = await axios.get(`${API_BASE_URL}/Shop`, { params });
+          setShops(response.data);
+        } catch (error) {
+          console.error('Error fetching shops:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchShops();
+    }, 500); // 500ms Debounce
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, userLocation]);
 
   return (
-    <div style={{ backgroundColor: 'white' }}>
-      <h1 style={{ textAlign: 'center', color: '#12a9a1', fontSize: '1.5rem' }}>
-        Shops
+    <div style={{ backgroundColor: 'white', minHeight: '100vh', paddingBottom: '50px' }}>
+      <h1 style={{ textAlign: 'center', color: '#134e4a', fontSize: '2.5rem', paddingTop: '40px', fontWeight: '900', letterSpacing: '-0.05em' }}>
+        Discover the Best Shops Near You
       </h1>
 
-      <div className="search-container">
-        <label htmlFor="search-input" className="sr-only">
-          Search Shops
-        </label>
+      <div className="search-container" style={{ maxWidth: '700px', margin: '30px auto', position: 'relative' }}>
         <input
-          id="search-input"
           type="text"
-          placeholder="Search Shops..."
+          placeholder="Search securely by exact shop name or detailed keywords..."
           value={searchTerm}
-          onChange={handleSearch}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ width: '100%', padding: '20px 50px 20px 30px', borderRadius: '40px', border: '2px solid #f3f4f6', boxShadow: '0 10px 25px rgba(0,0,0,0.05)', fontSize: '1.1rem', outline: 'none' }}
         />
-        <i className="fa-solid fa-magnifying-glass absolute right-2 top-5 text-brand"></i>
+        <i className="fa-solid fa-magnifying-glass" style={{ position: 'absolute', right: '30px', top: '23px', color: '#0d9488', fontSize: '1.2rem' }}></i>
       </div>
 
-      <div className="shop-list">
-        {filteredShopItems.length === 0 ? (
-          <p style={{ textAlign: 'center' }}>No shops found.</p>
-        ) : (
-          filteredShopItems.map((shop) => (
-            <ShopItem
-              key={shop._id}
-              shop={shop}
-              userLocation={userLocation}
-            />
-          ))
-        )}
-      </div>
+      {loading ? <Loader /> : (
+          <div className="shop-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '40px', justifyContent: 'center', padding: '0 40px' }}>
+            {shops.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '80px', color: '#9ca3af' }}>
+                  <i className="fa-solid fa-store-slash" style={{ fontSize: '4rem', marginBottom: '20px' }}></i>
+                  <p style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>No geographical or keyword matches discovered.</p>
+              </div>
+            ) : (
+              shops.map((shop) => (
+                <ShopItem
+                  key={shop._id}
+                  shop={shop}
+                />
+              ))
+            )}
+          </div>
+      )}
     </div>
   );
 }

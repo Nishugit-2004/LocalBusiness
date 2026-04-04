@@ -12,6 +12,9 @@ const AddShop = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [locationLoading, setLocationLoading] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,6 +44,8 @@ const AddShop = () => {
       description,
       imageUrl,
       adminId,
+      latitude,
+      longitude
     };
 
     try {
@@ -59,6 +64,8 @@ const AddShop = () => {
       setName("");
       setDescription("");
       setImageUrl("");
+      setLatitude(null);
+      setLongitude(null);
     } catch (error) {
       console.error("Error posting shop:", error);
       toast.error("Something went wrong.");
@@ -104,6 +111,23 @@ const AddShop = () => {
                  onChange={(e) => setImageUrl(e.target.value)}
                  className="w-full px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-teal-500 outline-none transition bg-gray-50 font-medium"
                />
+            </div>
+
+            <div className="space-y-3 pt-2">
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    setLocationLoading(true);
+                    navigator.geolocation.getCurrentPosition(
+                      (pos) => { setLatitude(pos.coords.latitude); setLongitude(pos.coords.longitude); setLocationLoading(false); toast.success("Location locked!") },
+                      (err) => { setLocationLoading(false); toast.error("Could not fetch location.") }
+                    );
+                  }}
+                  className={`w-full py-4 rounded-2xl border-2 border-dashed font-bold flex items-center justify-center gap-2 transition ${latitude ? 'border-green-500 text-green-600 bg-green-50' : 'border-gray-300 text-gray-500 hover:border-teal-500 hover:text-teal-600 hover:bg-teal-50'}`}
+                >
+                  <i className="fa-solid fa-location-dot"></i>
+                  {locationLoading ? 'Locating...' : latitude ? 'Coordinates Locked ✓' : 'Pin Shop Location Automatically'}
+                </button>
             </div>
 
             <button type="submit" className="w-full bg-teal-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-teal-700 transform transition active:scale-95 mt-4">

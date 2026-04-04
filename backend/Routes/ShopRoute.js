@@ -7,17 +7,19 @@ const router = express.Router();
 
 router.post('/', verifyAdmin, async (req, res) => {
   try {
-    const { name, description, imageUrl } = req.body;
+    const { name, description, imageUrl, latitude, longitude } = req.body;
     const adminId = req.admin.id;  
-    const newFoodItem = new FoodItem({
-      name,
-      description,
-      imageUrl,
-      adminId 
-      
-    });
-
     
+    const shopData = { name, description, imageUrl, adminId };
+    
+    if (latitude && longitude) {
+      shopData.location = { 
+        type: 'Point', 
+        coordinates: [parseFloat(longitude), parseFloat(latitude)] 
+      };
+    }
+
+    const newFoodItem = new FoodItem(shopData);
     await newFoodItem.save();
 
     res.status(201).json({ message: 'Restaurant added successfully!', foodItem: newFoodItem });
@@ -30,7 +32,36 @@ router.post('/', verifyAdmin, async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const foodItems = await FoodItem.find();
+    const { search, lat, lng } = req.query;
+    let pipeline = [];
+
+    // $geoNear MUST be the very first stage in the pipeline
+    if (lat && lng) {
+      pipeline.push({
+        $geoNear: {
+          near: { type: "Point", coordinates: [parseFloat(lng), parseFloat(lat)] },
+          distanceField: "distance", // Adds numeric distance in meters to results
+          spherical: true
+        }
+      });
+    }
+
+    if (search && search.trim() !== '') {
+      pipeline.push({
+        $match: {
+          // Alternatively we can use a soft regex if MongoDB fails to instantly bind the Text Index dynamically
+          name: { $regex: search, $options: 'i' }
+        }
+      });
+    }
+
+    let foodItems;
+    if (pipeline.length > 0) {
+      foodItems = await FoodItem.aggregate(pipeline);
+    } else {
+      foodItems = await FoodItem.find();
+    }
+    
     res.json(foodItems);
   } catch (err) {
     res.status(500).json({ message: err.message });
