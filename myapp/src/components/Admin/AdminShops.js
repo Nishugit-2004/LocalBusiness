@@ -82,7 +82,8 @@ const AdminShops = () => {
                   <h3 className="text-2xl font-black text-gray-800 mb-2">{shop.name}</h3>
                   <div className="flex flex-wrap gap-4 text-sm text-gray-500 font-medium">
                      <span className="flex items-center gap-1">
-                        <i className="fa-solid fa-location-dot text-orange-500"></i> {shop.location || 'N/A'}
+                        <i className="fa-solid fa-location-dot text-orange-500"></i> 
+                        {shop.location?.coordinates ? `Loc: ${shop.location.coordinates[1].toFixed(2)}, ${shop.location.coordinates[0].toFixed(2)}` : (typeof shop.location === 'string' ? shop.location : 'Global')}
                      </span>
                      <span className="flex items-center gap-1">
                         <i className="fa-solid fa-utensils text-teal-500"></i> {shop.cuisine || 'N/A'}
