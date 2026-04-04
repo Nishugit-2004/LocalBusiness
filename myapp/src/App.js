@@ -30,6 +30,7 @@ import AdminShops from './components/Admin/AdminShops';
 import ShopMenu from './components/Menus/ShopMenu';
 import ManageMenu from './components/Admin/ManageMenu';
 import AdminAnalytics from './components/Admin/AdminAnalytics';
+import AuthSelection from './components/Layout/AuthSelection';
 
 import { Toaster } from 'react-hot-toast';
 import { useSelector, useDispatch } from 'react-redux';
@@ -82,6 +83,8 @@ function App() {
           <Route path="/shop/:shopId" element={<ShopMenu/>}/>
           <Route path="/shop/AddShop" element={<AdminShops/>}/>
           
+          <Route path="/signup" element={<AuthSelection/>}/>
+          <Route path="/login" element={<AuthSelection/>}/>
           <Route path="/user/signup" element={<Signup/>}/>
           <Route path="/user/login" element={<Login/>}/>
           <Route path="/admin/signup" element={<AdminSignup/>}/>

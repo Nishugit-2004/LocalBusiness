@@ -140,19 +140,18 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="hidden md:flex items-center space-x-3">
-              {/* Seller and Customer Buttons */}
               <Link
-                to="/admin/signup"
-                className="text-sm font-medium text-white bg-teal-600 hover:bg-teal-800 px-3 py-1 rounded-md transition duration-300"
+                to="/signup"
+                className="text-sm font-black uppercase tracking-widest text-white bg-teal-600 hover:bg-teal-800 px-6 py-2 rounded-xl transition duration-300 shadow-lg"
               >
-                Become a Seller
+                Sign Up
               </Link>
 
               <Link
-                to="/user/signup"
-                className="text-sm font-medium text-white bg-teal-600 hover:bg-teal-800 px-3 py-1 rounded-md transition duration-300"
+                to="/login"
+                className="text-sm font-black uppercase tracking-widest text-teal-600 border-2 border-teal-600 hover:bg-teal-50 px-6 py-2 rounded-xl transition duration-300"
               >
-                Become a Customer
+                Login
               </Link>
             </div>
           )}
@@ -250,18 +249,18 @@ const Navbar = () => {
           ) : (
             <div className="flex flex-col gap-5">
               <Link
-                to="/admin/signup"
+                to="/signup"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block w-full py-5 text-center text-lg font-bold bg-teal-600 text-white rounded-2xl shadow-lg border-b-4 border-teal-800"
+                className="block w-full py-5 text-center text-lg font-black uppercase tracking-widest bg-teal-600 text-white rounded-2xl shadow-xl border-b-4 border-teal-800"
               >
-                Become a Seller
+                Create Account
               </Link>
               <Link
-                to="/user/signup"
+                to="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block w-full py-5 text-center text-lg font-bold bg-teal-500 text-white rounded-2xl shadow-lg border-b-4 border-teal-700"
+                className="block w-full py-5 text-center text-lg font-black uppercase tracking-widest bg-white text-teal-600 rounded-2xl shadow-xl border-2 border-teal-600"
               >
-                Become a Customer
+                Sign In
               </Link>
             </div>
           )}

@@ -27,18 +27,18 @@ const Home = () => {
             heart of your community, one purchase at a time.
           </p>
           {!anyAuth && (
-            <div className="flex justify-center gap-4 mt-6">
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
               <Link
-                to="/user/login"
-                className="px-8 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-800"
+                to="/signup"
+                className="px-8 py-4 bg-teal-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-teal-700 shadow-2xl transition active:scale-95"
               >
-                Login
+                Sign Up Now
               </Link>
               <Link
-                to="/user/signup"
-                className="px-8 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-800"
+                to="/login"
+                className="px-8 py-4 bg-white/10 backdrop-blur-md text-white border-2 border-white/50 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white hover:text-teal-700 transition active:scale-95"
               >
-                Sign Up
+                Sign In
               </Link>
             </div>
           )}
