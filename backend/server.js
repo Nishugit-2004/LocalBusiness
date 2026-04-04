@@ -41,9 +41,12 @@ app.post('/api/location', (req, res) => {
   res.json({ message: 'Location received successfully' });
 });
 
-app.listen(port, (req,res) => {
-    console.log(`Server running at http://localhost:${port}/`);
+// Prevent Vercel Serverless Crashes by wrapping listen
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}/`);
   });
+}
 
 export default app;
 
