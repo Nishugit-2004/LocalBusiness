@@ -1,5 +1,6 @@
 import express from 'express';
 import MenuItem from '../model/MenuItemSchema.js';
+import FoodItem from '../model/ShopSchema.js';
 import { verifyAdmin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -18,6 +19,9 @@ router.get('/:restaurantId', async (req, res) => {
 router.post('/', verifyAdmin, async (req, res) => {
   try {
     const { restaurantId, name, description, imageUrl, price, inStock } = req.body;
+    const shop = await FoodItem.findOne({ _id: restaurantId, adminId: req.admin.id });
+    if (!shop) return res.status(403).json({ message: 'Not authorized to manipulate this shop' });
+    
     const newItem = new MenuItem({
       restaurantId,
       name,
@@ -36,6 +40,11 @@ router.post('/', verifyAdmin, async (req, res) => {
 // Update a menu item (Admin only)
 router.put('/:id', verifyAdmin, async (req, res) => {
   try {
+    const menuItem = await MenuItem.findById(req.params.id);
+    if (!menuItem) return res.status(404).json({ message: 'Menu item not found' });
+    const shop = await FoodItem.findOne({ _id: menuItem.restaurantId, adminId: req.admin.id });
+    if (!shop) return res.status(403).json({ message: 'Not authorized to update this item' });
+
     const updatedItem = await MenuItem.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -50,6 +59,11 @@ router.put('/:id', verifyAdmin, async (req, res) => {
 // Delete a menu item (Admin only)
 router.delete('/:id', verifyAdmin, async (req, res) => {
   try {
+    const menuItem = await MenuItem.findById(req.params.id);
+    if (!menuItem) return res.status(404).json({ message: 'Menu item not found' });
+    const shop = await FoodItem.findOne({ _id: menuItem.restaurantId, adminId: req.admin.id });
+    if (!shop) return res.status(403).json({ message: 'Not authorized to delete this item' });
+
     await MenuItem.findByIdAndDelete(req.params.id);
     res.json({ message: 'Menu item deleted' });
   } catch (err) {

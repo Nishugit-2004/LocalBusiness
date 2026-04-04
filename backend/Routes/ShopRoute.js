@@ -37,9 +37,9 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/restaurants', async (req, res) => {
+router.get('/restaurants', verifyAdmin, async (req, res) => {
   console.log("Fetching restaurants for adminId")
-  const { adminId } = req.query;
+  const adminId = req.admin.id;
 
   if (!adminId) {
     return res.status(400).json({ message: 'Invalid or missing adminId' });

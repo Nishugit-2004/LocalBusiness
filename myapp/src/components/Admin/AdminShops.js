@@ -41,7 +41,7 @@ const AdminShops = () => {
       }
       try {
         const response = await axios.get(`${API_BASE_URL}/Shop/restaurants`, {
-          params: { adminId }, 
+          headers: { Authorization: `Bearer ${adminData?.token}` }
         });
         setShops(response.data);
       } catch (err) {
