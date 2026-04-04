@@ -40,7 +40,7 @@ const AdminShops = () => {
         return;
       }
       try {
-        const response = await axios.get(`${API_BASE_URL}/shop/shops`, {
+        const response = await axios.get(`${API_BASE_URL}/Shop/restaurants`, {
           params: { adminId }, 
         });
         setShops(response.data);

@@ -7,9 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../../api';
 import Loader from '../Loader';
 import { toast, Toaster } from 'react-hot-toast';
-import { loadStripe } from '@stripe/stripe-js';
-
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+import stripePromise from '../../stripe';
 
 export const Cart = () => {
   const items = useSelector((state) => state.cart);

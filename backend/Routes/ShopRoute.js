@@ -37,26 +37,11 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
-  try {
-    const restaurant = await FoodItem.findById(req.params.id);
-    if (!restaurant) {
-      return res.status(404).json({ message: 'Restaurant not found' });
-    }
-    res.json(restaurant);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
 router.get('/restaurants', async (req, res) => {
-  console.log("Hiet")
+  console.log("Fetching restaurants for adminId")
   const { adminId } = req.query;
 
-  console.log(adminId)
-
-  
-  
-  if (!adminId || !mongoose.Types.ObjectId.isValid(adminId)) {
+  if (!adminId) {
     return res.status(400).json({ message: 'Invalid or missing adminId' });
   }
 
@@ -68,5 +53,18 @@ router.get('/restaurants', async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch restaurants' });
   }
 });
+
+router.get('/:id', async (req, res) => {
+  try {
+    const restaurant = await FoodItem.findById(req.params.id);
+    if (!restaurant) {
+      return res.status(404).json({ message: 'Restaurant not found' });
+    }
+    res.json(restaurant);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 
 export default router;
