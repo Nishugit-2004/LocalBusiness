@@ -23,7 +23,7 @@ const Home = () => {
           </h1>
           <p>
             When you shop local, you’re not just buying a product — you’re
-            backing a dream, a neighbor, a story. Shoploca connects you to the
+            backing a dream, a neighbor, a story. Mandi - Local Business Connector connects you to the
             heart of your community, one purchase at a time.
           </p>
           {!anyAuth && (
@@ -56,39 +56,36 @@ const Home = () => {
               <div className="card">
                 <div className="card-content">
                   <p>
-                    "The food was absolutely amazing! The best dining experience. 
-                    Highly recommend the steak!"
+                    "Very helpful for discovering new shops in my area that I didn’t even know existed."
                   </p>
                   <br />
                   <div className="flex justify-between">
-                    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" />
-                    <h3>John Doe</h3>
+                    <img src="https://www.shutterstock.com/image-photo/generate-passport-style-photo-straight-260nw-2612340347.jpg" alt="User" />
+                    <h3>Santhosh</h3>
                   </div>
                 </div>
               </div>
               <div className="card">
                 <div className="card-content">
                   <p>
-                    "Wonderful ambiance and friendly staff. The desserts were to
-                    die for. Will definitely come back soon!"
+                    "Ordering from nearby stores has never been this easy. Highly recommended!"
                   </p>
                   <br />
                   <div className="flex justify-between">
                     <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="User" />
-                    <h3>Jane Smith</h3>
+                    <h3>Mahima</h3>
                   </div>
                 </div>
               </div>
               <div className="card">
                 <div className="card-content">
                   <p>
-                    "A hidden gem in the city. The pasta dishes were exquisite.
-                    Excellent service and great value for money."
+                    "As a shop owner, this app helped me get more customers.”
                   </p>
                   <br />
                   <div className="flex">
                     <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="User" />
-                    <h3>Mike Johnson</h3>
+                    <h3>Rajesh</h3>
                   </div>
                 </div>
               </div>
