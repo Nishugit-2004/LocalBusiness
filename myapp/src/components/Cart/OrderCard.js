@@ -77,10 +77,7 @@ const OrderCard = ({ order, onRemove }) => {
           </button>
         </div>
 
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
         <p>Total Price: ₹{order.totalPrice}</p>
         <p>Discounted Price: ₹{order.discountedPrice}</p>
         <p className="text-sm text-gray-600">
