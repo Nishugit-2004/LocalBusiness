@@ -59,7 +59,7 @@ const OrderCard = ({ order, onRemove }) => {
     }
   };
 
-  const steps = ['Pending', 'Preparing', 'Out for Delivery', 'Delivered'];
+  const steps = ['Pending', 'Packing', 'Out for Delivery', 'Delivered'];
   const currentStepIndex = steps.indexOf(liveStatus);
 
   if (loading) return <Loader />;
