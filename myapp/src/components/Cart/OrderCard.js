@@ -77,7 +77,7 @@ const OrderCard = ({ order, onRemove }) => {
           </button>
         </div>
 
-        <h2 className="text-md text-teal-700 mb-1">Restaurant: {order.restaurantName}</h2>
+
         <p>Total Price: ₹{order.totalPrice}</p>
         <p>Discounted Price: ₹{order.discountedPrice}</p>
         <p className="text-sm text-gray-600">
