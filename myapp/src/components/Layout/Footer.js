@@ -34,21 +34,21 @@ const Footer = () => {
                 </div>
 
                 {/* Quick Links */}
-                <div>
+                /* <div>
                     <h3 className="text-lg font-semibold text-yellow-400 mb-3">Quick Links</h3>
                     <ul className="space-y-2 text-sm">
                         <li><a href="/#" className="hover:text-white">Home</a></li>
                         <li><a href="/#about" className="hover:text-white">About Us</a></li>
                         <li><a href="/#contact" className="hover:text-white">Contact Us</a></li>
                     </ul>
-                </div>
+                </div> */
 
                 {/* Contact Info */}
                 <div>
                     <h3 className="text-lg font-semibold text-yellow-400 mb-3">Contact Info</h3>
-                    <p>Email: manyavar12@gmail.com</p>
+                    <p>Email: mahima7@gmail.com</p>
                     <p>Phone: +1234567890</p>
-                    <p>Address: 123 Indrapuri, Bhopal M.P.</p>
+                    <p>Address: 269, Vijaynagar, Bengaluru - 560040</p>
                 </div>
             </div>
 
