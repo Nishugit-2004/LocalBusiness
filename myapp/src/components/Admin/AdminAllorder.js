@@ -37,7 +37,14 @@ function OrderList() {
   const fetchorders = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_BASE_URL}/admin/allorder`);
+      const adminData = JSON.parse(sessionStorage.getItem("adminData"));
+      const token = adminData?.token;
+      
+      const response = await axios.get(`${API_BASE_URL}/admin/allorder`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       setorder(response.data);
     } catch (error) {
       console.error("Error fetching orders:", error);

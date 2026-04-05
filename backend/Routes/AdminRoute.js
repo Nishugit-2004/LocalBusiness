@@ -1,11 +1,13 @@
 
 import bcrypt from 'bcryptjs';
-import express from 'express'
-import jwt from 'jsonwebtoken'
+import express from 'express';
+import jwt from 'jsonwebtoken';
 import Admin from '../model/adminSchema.js';
 import User from '../model/UserSchema.js';
 import Order from '../model/orderSchema.js';
 import Fooditem from '../model/ShopSchema.js';
+import { verifyAdmin } from '../middleware/authMiddleware.js';
+
 const router=express.Router();
 
 router.post('/signup', async (req, res) => {
@@ -89,10 +91,28 @@ router.get('/alladmin', async (req,res)=>{
 })
 
 
-router.get('/allorder', async (req,res)=>{
+router.get('/allorder', verifyAdmin, async (req,res)=>{
     try {
-        const users = await Order.find();
-        res.json(users);
+        const adminId = req.admin.id;
+        const adminRole = req.admin.role;
+
+        let orders;
+        if (adminRole === 'SuperAdmin') {
+            orders = await Order.find().sort({ orderDate: -1 });
+        } else {
+            // Seller Mode: Only fetch orders tied to their shops
+            const shops = await Fooditem.find({ adminId: adminId });
+            const shopIds = shops.map(s => s._id);
+            
+            orders = await Order.find({
+                $or: [
+                    { shopId: { $in: shopIds } },
+                    { 'items.restaurantId': { $in: shopIds } }
+                ]
+            }).sort({ orderDate: -1 });
+        }
+
+        res.json(orders);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

@@ -40,6 +40,55 @@ const AddShop = () => {
     'Professional Services'
   ];
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image must be smaller than 5MB");
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload a valid image file");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const MAX_WIDTH = 800;
+        const MAX_HEIGHT = 800;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        // Compress to JPEG with 0.8 quality to keep payload small but good quality
+        const compressedBase64 = canvas.toDataURL("image/jpeg", 0.8);
+        setImageUrl(compressedBase64);
+      };
+    };
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -155,14 +204,29 @@ const AddShop = () => {
             </div>
 
             <div className="space-y-2">
-               <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Shop Image URL</label>
-               <input
-                 type="text"
-                 placeholder="https://..."
-                 value={imageUrl}
-                 onChange={(e) => setImageUrl(e.target.value)}
-                 className="w-full px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-teal-500 outline-none transition bg-gray-50 font-medium"
-               />
+               <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Shop Image Cover</label>
+               <div className="relative group w-full h-56 rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50 flex flex-col items-center justify-center overflow-hidden transition-all hover:border-teal-500 hover:bg-teal-50 cursor-pointer">
+                 <input
+                   type="file"
+                   accept="image/*"
+                   onChange={handleImageUpload}
+                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                 />
+                 {imageUrl ? (
+                   <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                 ) : (
+                   <div className="flex flex-col items-center justify-center text-gray-400 group-hover:text-teal-600 transition">
+                     <i className="fa-solid fa-cloud-arrow-up text-5xl mb-3"></i>
+                     <span className="font-extrabold">Tap to Upload Image</span>
+                     <span className="text-xs mt-1 font-medium">(Max 5MB)</span>
+                   </div>
+                 )}
+                 {imageUrl && (
+                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center pointer-events-none">
+                     <span className="text-white font-bold tracking-widest uppercase text-sm"><i className="fa-solid fa-pen mr-2"></i>Change Image</span>
+                   </div>
+                 )}
+               </div>
             </div>
 
             <div className="space-y-3 pt-2">
