@@ -37,7 +37,7 @@ function OrderList() {
   const fetchorders = async () => {
     setLoading(true);
     try {
-      const adminData = JSON.parse(sessionStorage.getItem("adminData"));
+      const adminData = JSON.parse(localStorage.getItem("adminData"));
       const token = adminData?.token;
       
       const response = await axios.get(`${API_BASE_URL}/admin/allorder`, {
