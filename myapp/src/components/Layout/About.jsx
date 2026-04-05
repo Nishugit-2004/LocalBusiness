@@ -8,7 +8,7 @@ const About = () => {
       {/* Intro Section */}
       <div className="bg-indigo-50 py-16 px-6 md:px-20 text-center">
         <h2 className="text-5xl font-bold text-[#12a9a1] mb-4 animate-fade-in-down">
-          Welcome to ShopLocal
+          Welcome to Mandi - Local Business Connector
         </h2>
         <p className="text-gray-600 text-lg max-w-3xl mx-auto animate-fade-in-up">
           Empowering local businesses and helping you shop smarter—right around
@@ -28,7 +28,7 @@ const About = () => {
           </div>
           <div className="space-y-6 text-gray-700">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-              Welcome to <span className="text-indigo-600">ShopLocal</span>
+              Welcome to <span className="text-indigo-600">Mandi - Local Business Connector</span>
             </h1>
             <p className="text-lg leading-relaxed">
               Discover nearby stores, grab exclusive deals, enjoy quick
@@ -52,7 +52,7 @@ const About = () => {
       {/* Key Features Section */}
       <div className="bg-gray-100 py-20 px-6 md:px-20 text-center">
         <h3 className="text-3xl font-bold text-gray-800 mb-10">
-          Why ShopLocal?
+          Why Mandi - Local Business Connector?
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-6xl mx-auto">
           {[
@@ -97,7 +97,7 @@ const About = () => {
           Ready to explore your local shops?
         </h3>
         <p className="mb-6 text-lg">
-          Join ShopLocal today and make smarter, faster, and local choices.
+          Join Mandi - Local Business Connector today and make smarter, faster, and local choices.
         </p>
         <button className="px-8 py-3 bg-white text-indigo-600 font-semibold rounded-full hover:bg-gray-200 transition duration-300">
           Get Started
