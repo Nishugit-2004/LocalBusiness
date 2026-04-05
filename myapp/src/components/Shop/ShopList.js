@@ -72,19 +72,39 @@ function ShopList() {
 
   return (
     <div style={{ backgroundColor: 'white', minHeight: '100vh', paddingBottom: '50px' }}>
-      <h1 style={{ textAlign: 'center', color: '#134e4a', fontSize: '2.5rem', paddingTop: '40px', fontWeight: '900', letterSpacing: '-0.05em' }}>
-        Discover the Best Shops Near You
+      <h1 className="text-center px-4 pt-12 pb-2">
+        <span className="block text-[2rem] sm:text-[3rem] font-black tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-br from-teal-950 via-teal-800 to-teal-700">
+          Discover the Best Shops
+        </span>
+        <span className="text-teal-600/60 font-medium text-lg tracking-widest uppercase mt-4 block">
+          Near Your Neighborhood
+        </span>
       </h1>
 
-      <div className="search-container" style={{ maxWidth: '700px', margin: '30px auto', position: 'relative' }}>
-        <input
-          type="text"
-          placeholder="Search securely by shop name..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ width: '100%', padding: '20px 50px 20px 30px', borderRadius: '40px', border: '2px solid #f3f4f6', boxShadow: '0 10px 25px rgba(0,0,0,0.05)', fontSize: '1.1rem', outline: 'none' }}
-        />
-        <i className="fa-solid fa-magnifying-glass" style={{ position: 'absolute', right: '30px', top: '23px', color: '#0d9488', fontSize: '1.2rem' }}></i>
+      <div className="flex justify-center w-full px-4 sm:px-6">
+        <div className="relative w-full max-w-[700px] mt-8 mb-10 transition-all duration-300 group">
+          <input
+            type="text"
+            placeholder="Search securely by shop name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ 
+              width: '100%', 
+              padding: '22px 60px 22px 30px', 
+              borderRadius: '50px', 
+              border: '1px solid rgba(0,0,0,0.05)', 
+              boxShadow: '0 20px 40px -15px rgba(13, 148, 136, 0.1)', 
+              fontSize: '1.15rem', 
+              outline: 'none',
+              backgroundColor: '#fff',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+            className="focus:shadow-teal-600/10 focus:border-teal-500/20"
+          />
+          <div className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-teal-50 rounded-full text-teal-600 transition-colors group-focus-within:bg-teal-600 group-focus-within:text-white">
+            <i className="fa-solid fa-magnifying-glass text-lg"></i>
+          </div>
+        </div>
       </div>
 
       {/* CATEGORY FILTER STRIP */}
