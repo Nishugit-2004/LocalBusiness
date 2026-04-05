@@ -72,7 +72,7 @@ const Home = () => {
                   </p>
                   <br />
                   <div className="flex justify-between">
-                    <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="User" />
+                    <img src="https://www.shutterstock.com/image-photo/female-indian-advocate-passport-size-260nw-2756299755.jpg" alt="User" />
                     <h3>Mahima</h3>
                   </div>
                 </div>
@@ -84,7 +84,7 @@ const Home = () => {
                   </p>
                   <br />
                   <div className="flex">
-                    <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="User" />
+                    <img src="https://i.pinimg.com/236x/4c/cd/08/4ccd086a8b7970c7a1ab4961e9bfcafc.jpg" alt="User" />
                     <h3>Rajesh</h3>
                   </div>
                 </div>
