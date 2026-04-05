@@ -102,7 +102,7 @@ const AdminProfile = () => {
 
              <div className="pt-20 pb-10 px-8">
                <h1 className="text-3xl font-black text-gray-800 tracking-tight">Admin Overview</h1>
-               <p className="text-gray-500 text-sm mb-8">Managing VirtualShop with authority.</p>
+               <p className="text-gray-500 text-sm mb-8">Managing Business with authority.</p>
 
                <div className="grid md:grid-cols-2 gap-6 bg-teal-50/50 p-6 rounded-2xl border border-dashed border-teal-200">
                   <div className="space-y-1">
