@@ -38,7 +38,7 @@ const AdminWelcome = () => {
             <h1 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-teal-400 mb-4">
               Hello, {username}!
             </h1>
-            <p className="text-gray-500 font-medium italic">Welcome back to your ShopLocal command center.</p>
+            <p className="text-gray-500 font-medium italic">Welcome back to Mandi - Local Business Connector.</p>
           </div>
 
           <div className="bg-white shadow-2xl rounded-3xl p-6 md:p-12 flex flex-col lg:flex-row items-center gap-12 border border-gray-50">
@@ -47,7 +47,7 @@ const AdminWelcome = () => {
                  <p className="text-teal-800 text-lg font-medium leading-relaxed">
                    Dear <span className="font-bold underlineDecoration-teal-500">{username}</span>,<br /><br />
                    Thank you for your hard work and dedication. Your efforts keep 
-                   <span className="font-black text-teal-700"> ShopLocal</span> running smoothly 
+                   <span className="font-black text-teal-700"> Mandi - Local Business Connector</span> running smoothly 
                    and efficiently. Your commitment makes a huge impact every single day.
                  </p>
               </div>
@@ -57,7 +57,7 @@ const AdminWelcome = () => {
                     <div className="w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center text-white shadow-lg">
                        <i className="fa-solid fa-shield-check text-xl"></i>
                     </div>
-                    <span className="font-black text-gray-700">Team ShopLocal Support</span>
+                    <span className="font-black text-gray-700">Team Mandi - Local Business Connector Support</span>
                  </div>
               </div>
             </div>
