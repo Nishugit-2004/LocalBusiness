@@ -2,10 +2,12 @@ import React from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import ContactUs from "./ContactUs";
 import ShopList from "../Shop/ShopList";
 
 const Home = () => {
+  const { t } = useTranslation();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const AdminAuthenticated = useSelector((state) => state.admin.isAuthenticated);
   const anyAuth = isAuthenticated || AdminAuthenticated;
@@ -18,13 +20,10 @@ const Home = () => {
         </video>
         <div className="content">
           <h1>
-            Your neighborhood at your fingertips—discover local treasures
-            online!
+            {t('signup_prompt')}
           </h1>
           <p>
-            When you shop local, you’re not just buying a product — you’re
-            backing a dream, a neighbor, a story. Mandi - Local Business Connector connects you to the
-            heart of your community, one purchase at a time.
+            {t('signup_desc')}
           </p>
           {!anyAuth && (
             <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
@@ -32,13 +31,13 @@ const Home = () => {
                 to="/signup"
                 className="px-8 py-4 bg-teal-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-teal-700 shadow-2xl transition active:scale-95"
               >
-                Sign Up Now
+                {t('sign_up')}
               </Link>
               <Link
                 to="/login"
                 className="px-8 py-4 bg-white/10 backdrop-blur-md text-white border-2 border-white/50 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white hover:text-teal-700 transition active:scale-95"
               >
-                Sign In
+                {t('sign_in')}
               </Link>
             </div>
           )}

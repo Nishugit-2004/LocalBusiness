@@ -74,10 +74,10 @@ function ShopList() {
     <div style={{ backgroundColor: 'white', minHeight: '100vh', paddingBottom: '50px' }}>
       <h1 className="text-center px-4 pt-12 pb-2">
         <span className="block text-[2rem] sm:text-[3rem] font-black tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-br from-teal-950 via-teal-800 to-teal-700">
-          Discover the Best Shops
+          {t('discover')}
         </span>
         <span className="text-teal-600/60 font-medium text-lg tracking-widest uppercase mt-4 block">
-          Near Your Neighborhood
+          {t('neighborhood')}
         </span>
       </h1>
 
@@ -85,7 +85,7 @@ function ShopList() {
         <div className="relative w-full max-w-[700px] mt-8 mb-10 transition-all duration-300 group">
           <input
             type="text"
-            placeholder="Search securely by shop name..."
+            placeholder={t('search_placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{ 
