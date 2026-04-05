@@ -4,8 +4,10 @@ import { API_BASE_URL } from '../../api';
 import ShopItem from './ShopItem';
 import './ShopList.css';
 import Loader from '../Loader';
+import { useTranslation } from 'react-i18next';
 
 function ShopList() {
+  const { t } = useTranslation();
   const [shops, setShops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
