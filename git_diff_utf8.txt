@@ -1,0 +1,226 @@
+﻿diff --git a/README.md b/README.md
+index 6f71f24..4a7e8a2 100644
+--- a/README.md
++++ b/README.md
+@@ -32,7 +32,7 @@
+ ## ≡ƒö¿ Installation & Setup
+ 
+ ### 1. Clone the Repository
+-git clone https://github.com/prachimehar/VirtualShop
++git clone https://github.com/Nishugit-2004/LocalBusiness
+ 
+ cd VirtualShop
+ 
+diff --git a/myapp/src/components/Admin/AdminProfile.js b/myapp/src/components/Admin/AdminProfile.js
+index 008722f..9d37ed1 100644
+--- a/myapp/src/components/Admin/AdminProfile.js
++++ b/myapp/src/components/Admin/AdminProfile.js
+@@ -102,7 +102,7 @@ const AdminProfile = () => {
+ 
+              <div className="pt-20 pb-10 px-8">
+                <h1 className="text-3xl font-black text-gray-800 tracking-tight">Admin Overview</h1>
+-               <p className="text-gray-500 text-sm mb-8">Managing VirtualShop with authority.</p>
++               <p className="text-gray-500 text-sm mb-8">Managing Business with authority.</p>
+ 
+                <div className="grid md:grid-cols-2 gap-6 bg-teal-50/50 p-6 rounded-2xl border border-dashed border-teal-200">
+                   <div className="space-y-1">
+diff --git a/myapp/src/components/Admin/AdminWelcome.js b/myapp/src/components/Admin/AdminWelcome.js
+index 064597f..6f23ab8 100644
+--- a/myapp/src/components/Admin/AdminWelcome.js
++++ b/myapp/src/components/Admin/AdminWelcome.js
+@@ -38,7 +38,7 @@ const AdminWelcome = () => {
+             <h1 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-teal-400 mb-4">
+               Hello, {username}!
+             </h1>
+-            <p className="text-gray-500 font-medium italic">Welcome back to your ShopLocal command center.</p>
++            <p className="text-gray-500 font-medium italic">Welcome back to Mandi - Local Business Connector.</p>
+           </div>
+ 
+           <div className="bg-white shadow-2xl rounded-3xl p-6 md:p-12 flex flex-col lg:flex-row items-center gap-12 border border-gray-50">
+@@ -47,7 +47,7 @@ const AdminWelcome = () => {
+                  <p className="text-teal-800 text-lg font-medium leading-relaxed">
+                    Dear <span className="font-bold underlineDecoration-teal-500">{username}</span>,<br /><br />
+                    Thank you for your hard work and dedication. Your efforts keep 
+-                   <span className="font-black text-teal-700"> ShopLocal</span> running smoothly 
++                   <span className="font-black text-teal-700"> Mandi - Local Business Connector</span> running smoothly 
+                    and efficiently. Your commitment makes a huge impact every single day.
+                  </p>
+               </div>
+@@ -57,7 +57,7 @@ const AdminWelcome = () => {
+                     <div className="w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center text-white shadow-lg">
+                        <i className="fa-solid fa-shield-check text-xl"></i>
+                     </div>
+-                    <span className="font-black text-gray-700">Team ShopLocal Support</span>
++                    <span className="font-black text-gray-700">Team Mandi - Local Business Connector Support</span>
+                  </div>
+               </div>
+             </div>
+diff --git a/myapp/src/components/Cart/OrderCard.js b/myapp/src/components/Cart/OrderCard.js
+index f1578d8..d14fd1a 100644
+--- a/myapp/src/components/Cart/OrderCard.js
++++ b/myapp/src/components/Cart/OrderCard.js
+@@ -59,7 +59,7 @@ const OrderCard = ({ order, onRemove }) => {
+     }
+   };
+ 
+-  const steps = ['Pending', 'Preparing', 'Out for Delivery', 'Delivered'];
++  const steps = ['Pending', 'Packing', 'Out for Delivery', 'Delivered'];
+   const currentStepIndex = steps.indexOf(liveStatus);
+ 
+   if (loading) return <Loader />;
+@@ -77,7 +77,7 @@ const OrderCard = ({ order, onRemove }) => {
+           </button>
+         </div>
+ 
+-        <h2 className="text-md text-teal-700 mb-1">Restaurant: {order.restaurantName}</h2>
++
+         <p>Total Price: Γé╣{order.totalPrice}</p>
+         <p>Discounted Price: Γé╣{order.discountedPrice}</p>
+         <p className="text-sm text-gray-600">
+diff --git a/myapp/src/components/Layout/About.jsx b/myapp/src/components/Layout/About.jsx
+index 5ef60b8..db22942 100644
+--- a/myapp/src/components/Layout/About.jsx
++++ b/myapp/src/components/Layout/About.jsx
+@@ -8,7 +8,7 @@ const About = () => {
+       {/* Intro Section */}
+       <div className="bg-indigo-50 py-16 px-6 md:px-20 text-center">
+         <h2 className="text-5xl font-bold text-[#12a9a1] mb-4 animate-fade-in-down">
+-          Welcome to ShopLocal
++          Welcome to Mandi - Local Business Connector
+         </h2>
+         <p className="text-gray-600 text-lg max-w-3xl mx-auto animate-fade-in-up">
+           Empowering local businesses and helping you shop smarterΓÇöright around
+@@ -28,7 +28,7 @@ const About = () => {
+           </div>
+           <div className="space-y-6 text-gray-700">
+             <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+-              Welcome to <span className="text-indigo-600">ShopLocal</span>
++              Welcome to <span className="text-indigo-600">Mandi - Local Business Connector</span>
+             </h1>
+             <p className="text-lg leading-relaxed">
+               Discover nearby stores, grab exclusive deals, enjoy quick
+@@ -52,7 +52,7 @@ const About = () => {
+       {/* Key Features Section */}
+       <div className="bg-gray-100 py-20 px-6 md:px-20 text-center">
+         <h3 className="text-3xl font-bold text-gray-800 mb-10">
+-          Why ShopLocal?
++          Why Mandi - Local Business Connector?
+         </h3>
+         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-6xl mx-auto">
+           {[
+@@ -97,7 +97,7 @@ const About = () => {
+           Ready to explore your local shops?
+         </h3>
+         <p className="mb-6 text-lg">
+-          Join ShopLocal today and make smarter, faster, and local choices.
++          Join Mandi - Local Business Connector today and make smarter, faster, and local choices.
+         </p>
+         <button className="px-8 py-3 bg-white text-indigo-600 font-semibold rounded-full hover:bg-gray-200 transition duration-300">
+           Get Started
+diff --git a/myapp/src/components/Layout/Footer.js b/myapp/src/components/Layout/Footer.js
+index b5fe7c6..8dc9d84 100644
+--- a/myapp/src/components/Layout/Footer.js
++++ b/myapp/src/components/Layout/Footer.js
+@@ -34,21 +34,21 @@ const Footer = () => {
+                 </div>
+ 
+                 {/* Quick Links */}
+-                <div>
++                /* <div>
+                     <h3 className="text-lg font-semibold text-yellow-400 mb-3">Quick Links</h3>
+                     <ul className="space-y-2 text-sm">
+                         <li><a href="/#" className="hover:text-white">Home</a></li>
+                         <li><a href="/#about" className="hover:text-white">About Us</a></li>
+                         <li><a href="/#contact" className="hover:text-white">Contact Us</a></li>
+                     </ul>
+-                </div>
++                </div> */
+ 
+                 {/* Contact Info */}
+                 <div>
+                     <h3 className="text-lg font-semibold text-yellow-400 mb-3">Contact Info</h3>
+-                    <p>Email: manyavar12@gmail.com</p>
++                    <p>Email: mahima7@gmail.com</p>
+                     <p>Phone: +1234567890</p>
+-                    <p>Address: 123 Indrapuri, Bhopal M.P.</p>
++                    <p>Address: 269, Vijaynagar, Bengaluru - 560040</p>
+                 </div>
+             </div>
+ 
+diff --git a/myapp/src/components/Layout/Home.js b/myapp/src/components/Layout/Home.js
+index 739ea41..8940be8 100644
+--- a/myapp/src/components/Layout/Home.js
++++ b/myapp/src/components/Layout/Home.js
+@@ -23,7 +23,7 @@ const Home = () => {
+           </h1>
+           <p>
+             When you shop local, youΓÇÖre not just buying a product ΓÇö youΓÇÖre
+-            backing a dream, a neighbor, a story. Shoploca connects you to the
++            backing a dream, a neighbor, a story. Mandi - Local Business Connector connects you to the
+             heart of your community, one purchase at a time.
+           </p>
+           {!anyAuth && (
+@@ -56,39 +56,36 @@ const Home = () => {
+               <div className="card">
+                 <div className="card-content">
+                   <p>
+-                    "The food was absolutely amazing! The best dining experience. 
+-                    Highly recommend the steak!"
++                    "Very helpful for discovering new shops in my area that I didnΓÇÖt even know existed."
+                   </p>
+                   <br />
+                   <div className="flex justify-between">
+-                    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" />
+-                    <h3>John Doe</h3>
++                    <img src="https://www.shutterstock.com/image-photo/generate-passport-style-photo-straight-260nw-2612340347.jpg" alt="User" />
++                    <h3>Santhosh</h3>
+                   </div>
+                 </div>
+               </div>
+               <div className="card">
+                 <div className="card-content">
+                   <p>
+-                    "Wonderful ambiance and friendly staff. The desserts were to
+-                    die for. Will definitely come back soon!"
++                    "Ordering from nearby stores has never been this easy. Highly recommended!"
+                   </p>
+                   <br />
+                   <div className="flex justify-between">
+-                    <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="User" />
+-                    <h3>Jane Smith</h3>
++                    <img src="https://www.shutterstock.com/image-photo/female-indian-advocate-passport-size-260nw-2756299755.jpg" alt="User" />
++                    <h3>Mahima</h3>
+                   </div>
+                 </div>
+               </div>
+               <div className="card">
+                 <div className="card-content">
+                   <p>
+-                    "A hidden gem in the city. The pasta dishes were exquisite.
+-                    Excellent service and great value for money."
++                    "As a shop owner, this app helped me get more customers.ΓÇ¥
+                   </p>
+                   <br />
+                   <div className="flex">
+-                    <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="User" />
+-                    <h3>Mike Johnson</h3>
++                    <img src="https://i.pinimg.com/236x/4c/cd/08/4ccd086a8b7970c7a1ab4961e9bfcafc.jpg" alt="User" />
++                    <h3>Rajesh</h3>
+                   </div>
+                 </div>
+               </div>
+diff --git a/myapp/src/components/Layout/Location.js b/myapp/src/components/Layout/Location.js
+index cf42639..3cfeca5 100644
+--- a/myapp/src/components/Layout/Location.js
++++ b/myapp/src/components/Layout/Location.js
+@@ -1,4 +1,4 @@
+-import React, { useState, useEffect } from 'react';
++/*import React, { useState, useEffect } from 'react';
+ import { API_BASE_URL } from '../../api';
+ import './Home.css';
+ 
+@@ -105,3 +105,4 @@ const Location = () => {
+ 
+ 
+ export default Location;
++*/

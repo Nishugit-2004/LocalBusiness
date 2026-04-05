@@ -34,14 +34,14 @@ const Footer = () => {
                 </div>
 
                 {/* Quick Links */}
-                /* <div>
+                {/* <div>
                     <h3 className="text-lg font-semibold text-yellow-400 mb-3">Quick Links</h3>
                     <ul className="space-y-2 text-sm">
                         <li><a href="/#" className="hover:text-white">Home</a></li>
                         <li><a href="/#about" className="hover:text-white">About Us</a></li>
                         <li><a href="/#contact" className="hover:text-white">Contact Us</a></li>
                     </ul>
-                </div> */
+                </div> */}
 
                 {/* Contact Info */}
                 <div>

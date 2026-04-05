@@ -6,7 +6,7 @@ import { API_BASE_URL } from '../../api';
 import ChatRoom from '../Chat/ChatRoom';
 import io from 'socket.io-client';
 
-const socket = io(API_BASE_URL.replace('/api', '')); 
+const socket = io(API_BASE_URL.replace('/api', ''));
 
 const OrderCard = ({ order, onRemove }) => {
   const [loading, setLoading] = useState(false);
@@ -22,10 +22,10 @@ const OrderCard = ({ order, onRemove }) => {
   useEffect(() => {
     socket.emit('join_room', order._id);
     socket.on('status_update', (data) => {
-       if(data.orderId === order._id) {
-          setLiveStatus(data.status);
-          toast.info(`Order status updated to: ${data.status}`);
-       }
+      if (data.orderId === order._id) {
+        setLiveStatus(data.status);
+        toast.info(`Order status updated to: ${data.status}`);
+      }
     });
     return () => socket.off('status_update');
   }, [order._id]);
@@ -47,7 +47,7 @@ const OrderCard = ({ order, onRemove }) => {
     setLoading(true);
     try {
       await axios.put(`${API_BASE_URL}/order/${order._id}/status`, { status: newStatus }, {
-          headers: { Authorization: `Bearer ${adminData.token}` }
+        headers: { Authorization: `Bearer ${adminData.token}` }
       });
       toast.success(`Order marked as ${newStatus}`);
       window.location.reload();
@@ -77,7 +77,10 @@ const OrderCard = ({ order, onRemove }) => {
           </button>
         </div>
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         <p>Total Price: ₹{order.totalPrice}</p>
         <p>Discounted Price: ₹{order.discountedPrice}</p>
         <p className="text-sm text-gray-600">
@@ -101,60 +104,60 @@ const OrderCard = ({ order, onRemove }) => {
 
         {/* ORDER TRACKING TIMELINE STEPPER */}
         <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-           <h3 className="text-[10px] uppercase tracking-widest font-black text-gray-400 text-center mb-6">Live Tracking Status</h3>
-           <div className="flex items-center justify-between max-w-full relative px-2">
-              {steps.map((step, idx) => (
-                <div key={step} className="flex flex-col items-center relative w-full z-10">
-                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black shadow-md transition-all duration-300 ${idx <= currentStepIndex ? 'bg-orange-500 text-white scale-110' : 'bg-white text-gray-300 border-2 border-gray-100'}`}>
-                      {idx < currentStepIndex ? <i className="fa-solid fa-check"></i> : idx + 1}
-                   </div>
-                   <p className={`text-[9px] mt-3 tracking-widest font-bold uppercase transition-colors duration-300 ${idx <= currentStepIndex ? 'text-orange-600' : 'text-gray-300'} text-center absolute -bottom-6 w-24 left-1/2 transform -translate-x-1/2`}>{step}</p>
-                   
-                   {/* Line Connector */}
-                   {idx < steps.length - 1 && (
-                      <div className={`absolute top-4 left-1/2 w-full h-[3px] -z-10 transition-colors duration-500 rounded-full ${idx < currentStepIndex ? 'bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]' : 'bg-gray-200'}`}></div>
-                   )}
+          <h3 className="text-[10px] uppercase tracking-widest font-black text-gray-400 text-center mb-6">Live Tracking Status</h3>
+          <div className="flex items-center justify-between max-w-full relative px-2">
+            {steps.map((step, idx) => (
+              <div key={step} className="flex flex-col items-center relative w-full z-10">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black shadow-md transition-all duration-300 ${idx <= currentStepIndex ? 'bg-orange-500 text-white scale-110' : 'bg-white text-gray-300 border-2 border-gray-100'}`}>
+                  {idx < currentStepIndex ? <i className="fa-solid fa-check"></i> : idx + 1}
                 </div>
-              ))}
-           </div>
-           
-           {/* Admin Action Bar */}
-           {isAdmin && (
-             <div className="mt-12 border-t border-gray-200 pt-6">
-                <div className="flex flex-wrap items-center justify-center gap-2 bg-white p-2 rounded-2xl shadow-inner border border-gray-100">
-                   {steps.map((step) => (
-                      <button 
-                        key={`btn-${step}`}
-                        onClick={() => handleUpdateStatus(step)}
-                        disabled={liveStatus === step}
-                        className={`text-[10px] uppercase font-black tracking-widest px-4 py-2 rounded-xl transition-all ${liveStatus === step ? 'bg-teal-600 text-white shadow-md scale-105' : 'text-gray-400 hover:bg-teal-50 hover:text-teal-600 active:scale-95'}`}
-                      >
-                         {step}
-                      </button>
-                   ))}
-                </div>
-             </div>
-           )}
+                <p className={`text-[9px] mt-3 tracking-widest font-bold uppercase transition-colors duration-300 ${idx <= currentStepIndex ? 'text-orange-600' : 'text-gray-300'} text-center absolute -bottom-6 w-24 left-1/2 transform -translate-x-1/2`}>{step}</p>
+
+                {/* Line Connector */}
+                {idx < steps.length - 1 && (
+                  <div className={`absolute top-4 left-1/2 w-full h-[3px] -z-10 transition-colors duration-500 rounded-full ${idx < currentStepIndex ? 'bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]' : 'bg-gray-200'}`}></div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Admin Action Bar */}
+          {isAdmin && (
+            <div className="mt-12 border-t border-gray-200 pt-6">
+              <div className="flex flex-wrap items-center justify-center gap-2 bg-white p-2 rounded-2xl shadow-inner border border-gray-100">
+                {steps.map((step) => (
+                  <button
+                    key={`btn-${step}`}
+                    onClick={() => handleUpdateStatus(step)}
+                    disabled={liveStatus === step}
+                    className={`text-[10px] uppercase font-black tracking-widest px-4 py-2 rounded-xl transition-all ${liveStatus === step ? 'bg-teal-600 text-white shadow-md scale-105' : 'text-gray-400 hover:bg-teal-50 hover:text-teal-600 active:scale-95'}`}
+                  >
+                    {step}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* CHAT TOGGLE */}
         <div className="mt-6 border-t border-gray-100 pt-4 flex flex-col items-center">
-            <button 
-                onClick={() => setShowChat(!showChat)}
-                className="flex items-center gap-2 text-teal-600 font-black text-[10px] tracking-widest uppercase hover:text-teal-700 transition"
-            >
-                <i className={`fa-solid ${showChat ? 'fa-comment-slash' : 'fa-comment-dots'} text-lg`}></i>
-                {showChat ? 'Hide Support Chat' : 'Open Support Chat'}
-            </button>
-            
-            {showChat && (
-                <ChatRoom 
-                    orderId={order._id}
-                    userId={userId}
-                    adminId={adminId}
-                    userRole={isAdmin ? 'Admin' : 'User'}
-                />
-            )}
+          <button
+            onClick={() => setShowChat(!showChat)}
+            className="flex items-center gap-2 text-teal-600 font-black text-[10px] tracking-widest uppercase hover:text-teal-700 transition"
+          >
+            <i className={`fa-solid ${showChat ? 'fa-comment-slash' : 'fa-comment-dots'} text-lg`}></i>
+            {showChat ? 'Hide Support Chat' : 'Open Support Chat'}
+          </button>
+
+          {showChat && (
+            <ChatRoom
+              orderId={order._id}
+              userId={userId}
+              adminId={adminId}
+              userRole={isAdmin ? 'Admin' : 'User'}
+            />
+          )}
         </div>
       </div>
 
