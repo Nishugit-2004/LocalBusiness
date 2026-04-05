@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+/*import React, { useState, useEffect } from 'react';
 import { API_BASE_URL } from '../../api';
 import './Home.css';
 
@@ -105,3 +105,4 @@ const Location = () => {
 
 
 export default Location;
+*/
