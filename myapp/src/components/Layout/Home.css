@@ -99,20 +99,23 @@
 
 
 .home-page2{
-  height: 80vh;
+  min-height: 60vh;
   background-size: cover;
+  display: flex;
   align-items: center;
   justify-content: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-image: url("../../../public/images/bg2.avif");
+  padding: 40px 0;
 }
 .home-page2 h1{
   text-align: center;
-  font-size: 1.5em;
+  font-size: 1.8rem;
   color: #ffffff;
-  padding: 10px;
+  padding: 20px;
   font-family: "Roboto Slab",serif;
+  margin-bottom: 20px;
 }
 
 
@@ -139,10 +142,10 @@
 }
 
 .card img {
-  width: 20%;
-  height: 20%;
-  border-radius: 100%;
-  height: auto;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 .card img:hover{
   transition: 2s;
@@ -171,27 +174,35 @@
 
 @media (max-width: 768px){
   .home-container{
-    margin-top: 30%;
+    height: 80vh;
   }
   .content{
     position:relative;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
   .content h1{
-    font-size:x-large;
+    font-size: 1.5rem;
   }
   .home-page2{
-    height: auto;
+    min-height: auto;
+    padding: 30px 10px;
+  }
+  .review-cards {
+    gap: 15px;
+    padding: 10px;
+  }
+  .card {
+     width: 100%;
+     max-width: 320px;
   }
   .about-main{
     width: 100%;
-    margin-top: 50%;
+    margin-top: 20px;
     flex-direction: column;
-    
-
   }
   .about-main2{
     width: 100%;
-    padding: 10px;
+    padding: 20px;
   }
-
 }
