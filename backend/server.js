@@ -15,6 +15,7 @@ import User from './model/UserSchema.js';
 import { Server } from 'socket.io';
 import http from 'http';
 import chatRouter from './Routes/chatRoute.js';
+import aiChatRouter from './Routes/AIChatRoute.js';
 const app=express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -42,6 +43,7 @@ app.use('/admin',adminRouter)
 app.use('/reviews', reviewRouter)
 app.use('/wishlist', wishlistRouter)
 app.use('/chat', chatRouter)
+app.use('/aichat', aiChatRouter)
  
 app.get('/',(req,res)=>{
   res.send("ker dikhaya")

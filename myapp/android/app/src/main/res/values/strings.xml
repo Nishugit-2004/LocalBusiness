@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">VirtualShop</string>
+    <string name="title_activity_main">VirtualShop</string>
+    <string name="package_name">com.virtualshop.app</string>
+    <string name="custom_url_scheme">com.virtualshop.app</string>
+</resources>

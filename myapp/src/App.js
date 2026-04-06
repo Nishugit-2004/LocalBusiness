@@ -32,6 +32,7 @@ import ShopMenu from './components/Menus/ShopMenu';
 import ManageMenu from './components/Admin/ManageMenu';
 import AdminAnalytics from './components/Admin/AdminAnalytics';
 import AuthSelection from './components/Layout/AuthSelection';
+import Chatbot from './components/Chatbot/Chatbot';
 
 import { Toaster } from 'react-hot-toast';
 import { useSelector, useDispatch } from 'react-redux';
@@ -79,6 +80,7 @@ function App() {
       <Toaster position="top-center" />
       <Navbar/>
       <Location/>
+      <Chatbot />
       <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/shop/:shopId" element={<ShopMenu/>}/>
