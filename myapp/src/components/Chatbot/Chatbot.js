@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { API_BASE_URL } from '../../api';
+import api, { API_BASE_URL } from '../../api';
 import './Chatbot.css';
 import { FaRobot, FaPaperPlane, FaTimes, FaRegCommentDots, FaUserCircle } from 'react-icons/fa';
 
