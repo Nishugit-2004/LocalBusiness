@@ -43,15 +43,17 @@ router.post('/', async (req, res) => {
   }
 
   try {
+    // Sanitize the key of any accidental quotes or whitespace
+    const cleanKey = apiKey.replace(/['"]+/g, '');
+    
     if (!genAI) {
-        genAI = new GoogleGenerativeAI(apiKey);
+        genAI = new GoogleGenerativeAI(cleanKey);
     }
     const model = genAI.getGenerativeModel({ 
       model: "gemini-1.5-flash",
-      generationConfig: { maxOutputTokens: 250 } // Keep responses short for speed
+      generationConfig: { maxOutputTokens: 250 }
     });
     
-    // Construct the prompt with context
     const fullPrompt = `${SYSTEM_PROMPT}\nUser Role: ${role || 'Guest'}\nUser Message: ${message}`;
     
     const result = await model.generateContent(fullPrompt);
@@ -60,8 +62,19 @@ router.post('/', async (req, res) => {
     
     res.json({ reply: text });
   } catch (error) {
-    console.error('AIChat Error:', error);
-    res.status(500).json({ reply: "Oops! I'm having a little trouble thinking right now. Please try again later! 😅" });
+    // Log detailed error info to Vercel dashboard
+    console.error('🚨 Gemini API Failure:', {
+      message: error.message,
+      stack: error.stack,
+      status: error.status,
+    });
+    
+    let userMessage = "Oops! I'm having a little trouble thinking right now. Please try again! 😅";
+    if (error.message.includes('API key not valid')) {
+      userMessage = "Authorization issue: The API Key seems invalid. Please check your Vercel settings! 🔑";
+    }
+
+    res.status(500).json({ reply: userMessage });
   }
 });
 
