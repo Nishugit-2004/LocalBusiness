@@ -40,13 +40,14 @@ const Chatbot = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post(`${API_BASE_URL}/aichat`, {
+            const response = await api.post(`/aichat`, {
                 message: text,
                 role: role,
                 history: messages
             });
             setMessages([...newMessages, { text: response.data.reply, isBot: true }]);
         } catch (error) {
+            console.error("Chatbot Error:", error);
             setMessages([...newMessages, { text: "Sorry, I'm offline at the moment. Please try again later! 🛠️", isBot: true }]);
         } finally {
             setLoading(false);

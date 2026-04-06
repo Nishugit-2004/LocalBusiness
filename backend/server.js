@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import dbconnection from './DbConnection/DbConnect.js';
@@ -10,7 +12,6 @@ import orderRouter from './Routes/orderRoute.js';
 import adminRouter from './Routes/AdminRoute.js'
 import reviewRouter from './Routes/reviewRoutes.js';
 import wishlistRouter from './Routes/wishlistRoutes.js';
-import dotenv from 'dotenv'
 import User from './model/UserSchema.js';
 import { Server } from 'socket.io';
 import http from 'http';
@@ -24,7 +25,6 @@ const io = new Server(server, {
 app.set('io', io);
 app.use(bodyParser.json({ limit: '10mb' }));
 const port=4000;
-dotenv.config();
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
