@@ -47,7 +47,12 @@ const Chatbot = () => {
             });
             setMessages([...newMessages, { text: response.data.reply, isBot: true }]);
         } catch (error) {
-            console.error("Chatbot Error:", error);
+            console.error("🚨 Chatbot Build/Connect Error:", {
+              message: error.message,
+              status: error.response?.status,
+              data: error.response?.data,
+              url: error.config?.url
+            });
             setMessages([...newMessages, { text: "Sorry, I'm offline at the moment. Please try again later! 🛠️", isBot: true }]);
         } finally {
             setLoading(false);
