@@ -33,12 +33,12 @@ General Rules:
 
 router.post('/', async (req, res) => {
   const { message, role, history } = req.body;
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY?.trim();
 
-  if (!apiKey || apiKey === 'AI_KEY_NOT_SET') {
-    // Fallback if no API key is provided
+  if (!apiKey || apiKey === 'AI_KEY_NOT_SET' || apiKey.length < 10) {
+    // Fallback if no API key is provided or it's invalid
     return res.json({ 
-      reply: "Hi! I'm your VirtualShop assistant. I'm currently in static mode, but I can tell you that we connect local shops to you! You can browse shops, add items to your cart, and sellers can manage their inventory easily. Please set up a Gemini API key for dynamic AI responses! 🚀" 
+      reply: "Hi! I'm your VirtualShop assistant. My dynamic AI features are currently waiting for a valid API key to be set in the Vercel dashboard. I can still help you browse shops and manage your cart in the meantime! 🛍️" 
     });
   }
 
@@ -46,7 +46,10 @@ router.post('/', async (req, res) => {
     if (!genAI) {
         genAI = new GoogleGenerativeAI(apiKey);
     }
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-1.5-flash",
+      generationConfig: { maxOutputTokens: 250 } // Keep responses short for speed
+    });
     
     // Construct the prompt with context
     const fullPrompt = `${SYSTEM_PROMPT}\nUser Role: ${role || 'Guest'}\nUser Message: ${message}`;
