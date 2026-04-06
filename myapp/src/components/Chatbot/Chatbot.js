@@ -47,13 +47,14 @@ const Chatbot = () => {
             });
             setMessages([...newMessages, { text: response.data.reply, isBot: true }]);
         } catch (error) {
-            console.error("🚨 Chatbot Build/Connect Error:", {
-              message: error.message,
-              status: error.response?.status,
-              data: error.response?.data,
-              url: error.config?.url
-            });
-            setMessages([...newMessages, { text: "Sorry, I'm offline at the moment. Please try again later! 🛠️", isBot: true }]);
+            console.error("🚨 Chatbot Error Details:", error);
+            const statusStr = error.response ? ` (Error ${error.response.status})` : ' (Connection Error)';
+            const finalMsg = error.response?.data?.reply || `Sorry, it looks like my server is busy or offline right now.${statusStr} 🛠️`;
+            
+            setMessages([...newMessages, { 
+                text: finalMsg, 
+                isBot: true 
+            }]);
         } finally {
             setLoading(false);
         }
