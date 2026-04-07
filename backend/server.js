@@ -17,84 +17,52 @@ import { Server } from 'socket.io';
 import http from 'http';
 import chatRouter from './Routes/chatRoute.js';
 import aiChatRouter from './Routes/AIChatRoute.js';
-const app=express();
+
+const app = express();
 const server = http.createServer(app);
+
+// Socket.io configuration with wide CORS for mobile
 const io = new Server(server, {
   cors: { origin: "*", methods: ["GET", "POST"] }
 });
 app.set('io', io);
+
 app.use(bodyParser.json({ limit: '10mb' }));
-const port=4000;
-app.use(cors());
+
+// WIDE CORS FOR PRODUCTION APK STABILITY
+app.use(cors({
+  origin: "*", 
+  credentials: true
+}));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
-// Vercel Serverless Architecture explicitly demands awaiting database connections inside the active HTTP Event Loop
+
+// Database connection wrapper
 app.use(async (req, res, next) => {
   await dbconnection();
   next();
 });
 
-app.use('/Shop',router);
-app.use('/menus',menuRouter)
-app.use('/user',userRouter);
-app.use('/cart',cartRouter)
-app.use('/order',orderRouter)
-app.use('/admin',adminRouter)
-app.use('/reviews', reviewRouter)
-app.use('/wishlist', wishlistRouter)
-app.use('/chat', chatRouter)
-app.use('/aichat', aiChatRouter)
- 
-app.get('/',(req,res)=>{
-  res.send("ker dikhaya")
-})
+// Routes
+app.use('/Shop', router);
+app.use('/menus', menuRouter);
+app.use('/user', userRouter);
+app.use('/cart', cartRouter);
+app.use('/order', orderRouter);
+app.use('/admin', adminRouter);
+app.use('/reviews', reviewRouter);
+app.use('/wishlist', wishlistRouter);
+app.use('/chat', chatRouter);
+app.use('/aichat', aiChatRouter);
 
-app.post('/api/location', (req, res) => {
-  const { latitude, longitude } = req.body;
-  console.log('User location received:', { latitude, longitude });
-
-
-  res.json({ message: 'Location received successfully' });
+app.get('/', (req, res) => {
+  res.send("VirtualShop Backend Online 🚀");
 });
 
-app.post('/api/location/save', async (req, res) => {
-  const { latitude, longitude, userId } = req.body;
-  console.log('User location received for saving:', { latitude, longitude });
-
-  try {
-    await User.findByIdAndUpdate(userId, {
-      location: {
-        lat: latitude,
-        lng: longitude
-      }
-    });
-    res.json({ message: 'Location saved successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Failed to save location' });
-  }
+const port = process.env.PORT || 4000;
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
 
-// Socket.io Connection Logic
-io.on('connection', (socket) => {
-  console.log('User connected to socket:', socket.id);
-
-  socket.on('join_room', (roomId) => {
-    socket.join(roomId);
-    console.log(`User joined room: ${roomId}`);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
-});
-
-// Prevent Vercel Serverless Crashes by wrapping listen
-if (process.env.NODE_ENV !== 'production') {
-  server.listen(port, () => {
-      console.log(`Server running at http://localhost:${port}/`);
-  });
-}
-
-// Strictly export a Vercel-compatible anonymous function wrapper 
-export default (req, res) => app(req, res);
+export default app;
