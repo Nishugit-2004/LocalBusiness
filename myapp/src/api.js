@@ -1,12 +1,14 @@
 import axios from 'axios';
 
 const isLocalhost = window.location.hostname === 'localhost';
-const defaultURL = 'https://thin-kings-cough.loca.lt';
 
-// Prioritize environment variable, then fallback to current origin if in production, otherwise LocalTunnel
+// Use your LIVE Vercel Backend URL as the permanent master address
+const PRODUCTION_URL = 'https://local-business-ebon.vercel.app';
+const LOCALTUNNEL_URL = 'https://thin-kings-cough.loca.lt';
+
 const API_BASE_URL = (
   process.env.REACT_APP_API_URL || 
-  (isLocalhost ? defaultURL : window.location.origin)
+  (isLocalhost ? LOCALTUNNEL_URL : PRODUCTION_URL)
 ).replace(/\/$/, '');
 
 // Guarantee every generic axios call universally injects the LocalTunnel Bypass
