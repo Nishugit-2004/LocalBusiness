@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import api, { API_BASE_URL } from '../../api';
 import './Chatbot.css';
-import { FaRobot, FaPaperPlane, FaTimes, FaRegCommentDots, FaUserCircle } from 'react-icons/fa';
 
 const Chatbot = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -85,7 +84,7 @@ const Chatbot = () => {
             {/* Float Button */}
             {!isOpen && (
                 <button className="chat-float-btn" onClick={() => setIsOpen(true)}>
-                    <FaRegCommentDots />
+                    💬
                     <span className="chat-badge">AI</span>
                 </button>
             )}
@@ -95,19 +94,21 @@ const Chatbot = () => {
                 <div className="chat-window">
                     <div className="chat-header">
                         <div className="header-info">
-                            <FaRobot className="bot-icon-header" />
+                            <span className="bot-emoji-header">🤖</span>
                             <div>
                                 <h3>VirtualGuide AI</h3>
                                 <p>Online | Helping {name}</p>
                             </div>
                         </div>
-                        <button className="close-btn" onClick={() => setIsOpen(false)}><FaTimes /></button>
+                        <button className="close-btn" onClick={() => setIsOpen(false)}>✕</button>
                     </div>
 
                     <div className="chat-messages">
                         {messages.map((msg, index) => (
                             <div key={index} className={`message-bubble ${msg.isBot ? 'bot' : 'user'}`}>
-                                {msg.isBot ? <FaRobot className="msg-icon" /> : <FaUserCircle className="msg-icon" />}
+                                <span className="msg-icon">
+                                    {msg.isBot ? '🤖' : '👤'}
+                                </span>
                                 <div className="text-content">{msg.text}</div>
                             </div>
                         ))}
@@ -137,7 +138,7 @@ const Chatbot = () => {
                             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                         />
                         <button onClick={() => handleSend()} disabled={loading}>
-                            <FaPaperPlane />
+                            ➤
                         </button>
                     </div>
                 </div>
