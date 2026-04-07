@@ -52,6 +52,7 @@ router.post('/', async (req, res) => {
 
     // Try multiple model strings for maximum compatibility with Vercel and Google Cloud regions
     const modelNames = ["gemini-1.5-flash", "gemini-pro-1.5", "gemini-pro"];
+    let finalModel = null;
     let lastError = null;
     for (const name of modelNames) {
         try {
