@@ -277,7 +277,7 @@
 /* Responsive Styling for Mobile Devices */
 @media (max-width: 480px) {
     .chatbot-wrapper {
-        bottom: 20px;
+        bottom: 100px;
         right: 20px;
     }
 
