@@ -1,91 +1,64 @@
 import express from 'express';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
 const router = express.Router();
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'AI_KEY_NOT_SET');
 
-const SYSTEM_PROMPT = `
-You are the Virtual Shop AI Assistant for "VirtualShop", a platform connecting local shops with customers.
-Your goal is to assist both Customers and Sellers based on their role.
-
-Role-Based Guidance:
-- If the user is a CUSTOMER:
-  * Help them find shops near their location.
-  * Recommend products (daily needs, hardware, fashion, electronics, etc.).
-  * Advise on tracking orders in the "Orders" section.
-  * Answer queries about payment (Stripe/Razorpay) and delivery.
-
-- If the user is a SELLER (Admin):
-  * Guide them on managing their shop in the "Seller Dashboard".
-  * Explain how to add/edit products and menu items.
-  * Help them understand how to view and manage customer orders.
-  * Provide tips for business growth on VirtualShop.
-
-General Rules:
-- Keep responses concise, friendly, and professional.
-- If an API key is not set, provide helpful static information about the platform.
-- Use emojis to make the conversation engaging.
-- Encourage users to sign up or log in if they haven't to access personalized features.
-`;
+const SYSTEM_PROMPT = `You are the VirtualShop AI Assistant, a helpful guide for a local multi-shop e-commerce platform. 
+Help users find products, track orders, or manage their own shops. Keep answers brief (under 100 words).`;
 
 router.post('/', async (req, res) => {
-  const { message, role, history } = req.body;
-  const apiKey = process.env.GEMINI_API_KEY?.trim();
+  const { message, role } = req.body;
+  const apiKey = process.env.GEMINI_API_KEY;
 
-  if (!apiKey || apiKey === 'AI_KEY_NOT_SET' || apiKey.length < 10) {
-    // Fallback if no API key is provided or it's invalid
-    return res.json({ 
-      reply: "Hi! I'm your VirtualShop assistant. My dynamic AI features are currently waiting for a valid API key to be set in the Vercel dashboard. I can still help you browse shops and manage your cart in the meantime! 🛍️" 
-    });
+  if (!apiKey || apiKey.length < 10) {
+    return res.status(500).json({ reply: "Authorization issue: Gemini API Key not set! 🔑" });
   }
 
   try {
-    // Sanitize the key of any accidental quotes or whitespace
+    // Sanitize the key
     const cleanKey = apiKey.replace(/['"]+/g, '').trim();
     
-    if (!genAI) {
-        genAI = new GoogleGenerativeAI(cleanKey);
+    // Choose the stable model
+    const modelName = "gemini-1.5-flash";
+    
+    // FORCING STABLE V1 ENDPOINT DIRECTLY
+    const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${cleanKey}`;
+    
+    const payload = {
+      contents: [{
+        parts: [{
+          text: `${SYSTEM_PROMPT}\nUser Role: ${role || 'Guest'}\nUser Message: ${message}`
+        }]
+      }],
+      generationConfig: {
+        maxOutputTokens: 300,
+        temperature: 0.7
+      }
+    };
+
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error?.message || `API Error: ${response.status}`);
     }
 
-    // Try multiple model IDs including the very newest ones
-    const modelNames = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"];
-    let finalModel = null;
-    let lastError = null;
+    const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
     
-    // Explicitly target the model with the latest stable version ID if possible
-    for (const name of modelNames) {
-        try {
-            const tempModel = genAI.getGenerativeModel({ 
-                model: name,
-            });
-            // Try an extremely tiny request to verify connection
-            const testResult = await tempModel.generateContent({ contents: [{ role: 'user', parts: [{ text: 'hi' }] }] });
-            if (testResult) {
-                finalModel = tempModel;
-                break;
-            }
-        } catch (e) {
-            console.warn(`🚨 Model ${name} failed:`, e.message);
-            lastError = e;
-            continue;
-        }
+    if (!replyText) {
+      throw new Error("No response content from AI");
     }
 
-    if (!finalModel) {
-        throw new Error(`All models failed. Last error: ${lastError?.message || 'Unknown'}`);
-    }
-    
-    const fullPrompt = `${SYSTEM_PROMPT}\nUser Role: ${role || 'Guest'}\nUser Message: ${message}`;
-    const result = await finalModel.generateContent(fullPrompt);
-    const response = await result.response;
-    const text = response.text();
-    res.json({ reply: text });
+    res.json({ reply: replyText });
+
   } catch (error) {
     console.error('🚨 Gemini API Failure:', error.message);
-    res.status(500).json({ reply: `AI Error: ${error.message}` });
+    res.status(500).json({ 
+      reply: `AI Direct-Link Error: ${error.message}. Please check your Key region! 🛠️` 
+    });
   }
 });
 
