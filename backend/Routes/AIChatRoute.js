@@ -62,19 +62,15 @@ router.post('/', async (req, res) => {
     
     res.json({ reply: text });
   } catch (error) {
-    // Log detailed error info to Vercel dashboard
+    // Log detailed error info to Vercel dashboard for developer
     console.error('🚨 Gemini API Failure:', {
       message: error.message,
-      stack: error.stack,
       status: error.status,
     });
     
-    let userMessage = "Oops! I'm having a little trouble thinking right now. Please try again! 😅";
-    if (error.message.includes('API key not valid')) {
-      userMessage = "Authorization issue: The API Key seems invalid. Please check your Vercel settings! 🔑";
-    }
-
-    res.status(500).json({ reply: userMessage });
+    // TEMPORARILY return the real error message to the user for debugging
+    const debugMessage = `AI Error: ${error.message}`;
+    res.status(500).json({ reply: debugMessage });
   }
 });
 
