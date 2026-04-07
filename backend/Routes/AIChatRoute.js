@@ -50,23 +50,25 @@ router.post('/', async (req, res) => {
         genAI = new GoogleGenerativeAI(cleanKey);
     }
 
-    // Try multiple model strings for maximum compatibility with Vercel and Google Cloud regions
-    const modelNames = ["gemini-1.5-flash", "gemini-pro-1.5", "gemini-pro"];
+    // Try multiple model IDs including the very newest ones
+    const modelNames = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"];
     let finalModel = null;
     let lastError = null;
+    
+    // Explicitly target the model with the latest stable version ID if possible
     for (const name of modelNames) {
         try {
             const tempModel = genAI.getGenerativeModel({ 
                 model: name,
-                generationConfig: { maxOutputTokens: 250 }
             });
-            const testResult = await tempModel.generateContent("hi");
+            // Try an extremely tiny request to verify connection
+            const testResult = await tempModel.generateContent({ contents: [{ role: 'user', parts: [{ text: 'hi' }] }] });
             if (testResult) {
                 finalModel = tempModel;
                 break;
             }
         } catch (e) {
-            console.warn(`Model ${name} failed:`, e.message);
+            console.warn(`🚨 Model ${name} failed:`, e.message);
             lastError = e;
             continue;
         }
