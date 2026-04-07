@@ -51,27 +51,34 @@ router.post('/', async (req, res) => {
     }
 
     // Try multiple model strings for maximum compatibility with Vercel and Google Cloud regions
-    const modelNames = ["gemini-1.5-flash", "gemini-pro"];
-    let model = null;
-    let lastError = null;
+    const modelNames = ["gemini-1.5-flash", "gemini-pro-1.5", "gemini-pro"];
+    let finalModel = null;
 
     for (const name of modelNames) {
         try {
-            model = genAI.getGenerativeModel({ 
+            const tempModel = genAI.getGenerativeModel({ 
                 model: name,
                 generationConfig: { maxOutputTokens: 250 }
             });
-            // Test if this model name is valid locally by attempting to prepare prompt
-            if (model) break;
+            
+            // We must actually attempt a tiny call to see if this model exists in this region
+            // Using a simple prompt to verify existence
+            const testResult = await tempModel.generateContent("hi");
+            if (testResult) {
+                finalModel = tempModel;
+                break;
+            }
         } catch (e) {
-            lastError = e;
+            console.warn(`Model ${name} failed, trying next...`);
             continue;
         }
     }
+
+    if (!finalModel) throw new Error("No supported AI models found for this account/region.");
     
     const fullPrompt = `${SYSTEM_PROMPT}\nUser Role: ${role || 'Guest'}\nUser Message: ${message}`;
     
-    const result = await model.generateContent(fullPrompt);
+    const result = await finalModel.generateContent(fullPrompt);
     const response = await result.response;
     const text = response.text();
     
