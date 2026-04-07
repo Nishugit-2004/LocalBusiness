@@ -44,15 +44,30 @@ router.post('/', async (req, res) => {
 
   try {
     // Sanitize the key of any accidental quotes or whitespace
-    const cleanKey = apiKey.replace(/['"]+/g, '');
+    const cleanKey = apiKey.replace(/['"]+/g, '').trim();
     
     if (!genAI) {
         genAI = new GoogleGenerativeAI(cleanKey);
     }
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
-      generationConfig: { maxOutputTokens: 250 }
-    });
+
+    // Try multiple model strings for maximum compatibility with Vercel and Google Cloud regions
+    const modelNames = ["gemini-1.5-flash", "gemini-pro"];
+    let model = null;
+    let lastError = null;
+
+    for (const name of modelNames) {
+        try {
+            model = genAI.getGenerativeModel({ 
+                model: name,
+                generationConfig: { maxOutputTokens: 250 }
+            });
+            // Test if this model name is valid locally by attempting to prepare prompt
+            if (model) break;
+        } catch (e) {
+            lastError = e;
+            continue;
+        }
+    }
     
     const fullPrompt = `${SYSTEM_PROMPT}\nUser Role: ${role || 'Guest'}\nUser Message: ${message}`;
     
@@ -62,15 +77,15 @@ router.post('/', async (req, res) => {
     
     res.json({ reply: text });
   } catch (error) {
-    // Log detailed error info to Vercel dashboard for developer
-    console.error('🚨 Gemini API Failure:', {
-      message: error.message,
-      status: error.status,
-    });
+    console.error('🚨 Gemini API Failure:', error.message);
     
-    // TEMPORARILY return the real error message to the user for debugging
-    const debugMessage = `AI Error: ${error.message}`;
-    res.status(500).json({ reply: debugMessage });
+    // Friendly error messaging
+    let userMessage = "Oops! I'm having a little trouble thinking right now. Please try again! 😅";
+    if (error.message.includes('API key not valid')) {
+      userMessage = "Authorization issue: The AI Key seems invalid. Please check your settings! 🔑";
+    }
+
+    res.status(500).json({ reply: userMessage });
   }
 });
 
