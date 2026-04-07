@@ -16,40 +16,39 @@ router.post('/', async (req, res) => {
     // Sanitize the key
     const cleanKey = apiKey.replace(/['"]+/g, '').trim();
     
-    // Choose the stable model
-    const modelName = "gemini-1.5-flash";
-    
-    // FORCING STABLE V1 ENDPOINT DIRECTLY
-    const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${cleanKey}`;
-    
-    const payload = {
-      contents: [{
-        parts: [{
-          text: `${SYSTEM_PROMPT}\nUser Role: ${role || 'Guest'}\nUser Message: ${message}`
-        }]
-      }],
-      generationConfig: {
-        maxOutputTokens: 300,
-        temperature: 0.7
-      }
-    };
+    const modelNames = ["gemini-1.5-flash", "gemini-pro", "gemini-1.0-pro"];
+    let lastError = null;
+    let replyText = null;
 
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+    for (const modelName of modelNames) {
+        try {
+            const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${cleanKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: `${SYSTEM_PROMPT}\nUser Role: ${role || 'Guest'}\nUser Message: ${message}` }] }],
+                generationConfig: { maxOutputTokens: 300, temperature: 0.7 }
+            };
 
-    const data = await response.json();
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
 
-    if (!response.ok) {
-      throw new Error(data.error?.message || `API Error: ${response.status}`);
+            const data = await response.json();
+            if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
+                replyText = data.candidates[0].content.parts[0].text;
+                break; // Found a working model!
+            } else {
+                lastError = data.error?.message || `Status ${response.status}`;
+            }
+        } catch (e) {
+            lastError = e.message;
+            continue;
+        }
     }
 
-    const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    
     if (!replyText) {
-      throw new Error("No response content from AI");
+      throw new Error(`All models failed. Last error: ${lastError}`);
     }
 
     res.json({ reply: replyText });
