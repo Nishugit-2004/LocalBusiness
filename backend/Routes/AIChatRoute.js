@@ -52,47 +52,37 @@ router.post('/', async (req, res) => {
 
     // Try multiple model strings for maximum compatibility with Vercel and Google Cloud regions
     const modelNames = ["gemini-1.5-flash", "gemini-pro-1.5", "gemini-pro"];
-    let finalModel = null;
-
+    let lastError = null;
     for (const name of modelNames) {
         try {
             const tempModel = genAI.getGenerativeModel({ 
                 model: name,
                 generationConfig: { maxOutputTokens: 250 }
             });
-            
-            // We must actually attempt a tiny call to see if this model exists in this region
-            // Using a simple prompt to verify existence
             const testResult = await tempModel.generateContent("hi");
             if (testResult) {
                 finalModel = tempModel;
                 break;
             }
         } catch (e) {
-            console.warn(`Model ${name} failed, trying next...`);
+            console.warn(`Model ${name} failed:`, e.message);
+            lastError = e;
             continue;
         }
     }
 
-    if (!finalModel) throw new Error("No supported AI models found for this account/region.");
+    if (!finalModel) {
+        throw new Error(`All models failed. Last error: ${lastError?.message || 'Unknown'}`);
+    }
     
     const fullPrompt = `${SYSTEM_PROMPT}\nUser Role: ${role || 'Guest'}\nUser Message: ${message}`;
-    
     const result = await finalModel.generateContent(fullPrompt);
     const response = await result.response;
     const text = response.text();
-    
     res.json({ reply: text });
   } catch (error) {
     console.error('🚨 Gemini API Failure:', error.message);
-    
-    // Friendly error messaging
-    let userMessage = "Oops! I'm having a little trouble thinking right now. Please try again! 😅";
-    if (error.message.includes('API key not valid')) {
-      userMessage = "Authorization issue: The AI Key seems invalid. Please check your settings! 🔑";
-    }
-
-    res.status(500).json({ reply: userMessage });
+    res.status(500).json({ reply: `AI Error: ${error.message}` });
   }
 });
 
